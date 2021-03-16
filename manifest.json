@@ -1,7 +1,7 @@
 {
   "name": "myaccount-orders-elektra",
   "vendor": "elektraqa",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "title": "My Account Sample Plugin",
   "description": "",
   "mustUpdateAt": "2019-07-09",
