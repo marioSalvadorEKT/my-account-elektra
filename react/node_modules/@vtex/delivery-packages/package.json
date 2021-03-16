@@ -1,0 +1,76 @@
+{
+  "name": "@vtex/delivery-packages",
+  "version": "2.18.1",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "cross-env NODE_ENV=test jest",
+    "jest": "cross-env NODE_ENV=test jest --watch --verbose --coverage=false",
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "prepublishOnly": "npm run build",
+    "postreleasy": "npm publish",
+    "lint": "eslint src",
+    "lint-fix": "eslint src --fix --max-warnings 0",
+    "branch": "echo $(git rev-parse --abbrev-ref HEAD) > /tmp/branch",
+    "lint-only-changed": "LIST=`git diff-index --name-only HEAD | uniq | grep /.*\\.js$ | grep -v json`; if [ \"$LIST\" ]; then eslint $LIST; fi",
+    "lint-not-beta": "npm run branch && if [ $(cat /tmp/branch) != \"beta\" ]; then npm run lint-only-changed; else echo 'skip lint on beta' ; fi",
+    "test-not-beta": "npm run branch && if [ $(cat /tmp/branch) != \"beta\" ]; then npm run test; else echo 'skip tests on beta' ; fi"
+  },
+  "keywords": [
+    "vtex",
+    "delivery"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vtex/delivery-packages.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vtex/delivery-packages/issues"
+  },
+  "homepage": "https://github.com/vtex/delivery-packages#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "echo 'Use --no-verify to avoid pre-commit hook'; npm run lint-not-beta",
+      "pre-push": "echo 'Use --no-verify to avoid pre-push hook'; npm run test-not-beta"
+    }
+  },
+  "devDependencies": {
+    "babel-core": "6",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^22.2.2",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.18.0",
+    "eslint-config-vtex": "^8.0.0",
+    "eslint-plugin-jest": "^21.12.2",
+    "husky": "^1.0.0-rc.14",
+    "jest": "^22.3.0",
+    "merge": ">=1.2.1",
+    "rollup": "^0.56.2",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.3.0",
+    "rollup-plugin-node-resolve": "^3.0.3",
+    "rollup-plugin-uglify": "^3.0.0",
+    "sshpk": "^1.13.2"
+  },
+  "jest": {
+    "testURL": "http://localhost/",
+    "transform": {
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+    ]
+  },
+  "dependencies": {
+    "@vtex/estimate-calculator": "^1.0.8"
+  }
+}

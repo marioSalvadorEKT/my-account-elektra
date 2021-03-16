@@ -1,0 +1,8 @@
+{
+  "my-account-page.elektra-orders-page": {
+    "component": "MyAppPage"
+  },
+  "my-account-link.elektra-orders-link": {
+    "component": "MyAppLink"
+  }
+}
