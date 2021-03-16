@@ -21,7 +21,7 @@ const headerConfig = () => {
 const MyOrdersElektra = (props) =>{
 
   const { userOrders, isLoading, ordersError, fetchOrders } = props
-  const emptyOrders = userOrders && !userOrders.length
+  const emptyOrders = userOrders && userOrders.length
 
   useEffect(() => {
     if (!userOrders) {
