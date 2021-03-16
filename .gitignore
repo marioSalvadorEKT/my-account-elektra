@@ -29,6 +29,7 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # App specific
+react/node_modules/
 node_modules/
 docs/_book/
 .tmp
