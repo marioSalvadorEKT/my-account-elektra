@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import Empty from '../components/Orders/EmptyState'
 import Greeting from '../components/commons/Greeting'
 import { fetchOrders } from '../actions/order-actions'
+import OrdersList from '../components/Order/OrdersList'
 import { ContentWrapper } from 'vtex.my-account-commons'
 
 
@@ -20,7 +21,7 @@ const headerConfig = () => {
 
 const MyOrdersElektra = (props) =>{
 
-  const { userOrders, isLoading, ordersError, fetchOrders } = props
+  const { allowSAC, userOrders, isLoading, ordersError, fetchOrders } = props
   const emptyOrders = userOrders && !userOrders.length
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const MyOrdersElektra = (props) =>{
     }
   }, [userOrders])
 
-  console.log(userOrders)
+  console.log(props)
 
   const handleCustomerImpersonation = () => {
     fetchOrders()
@@ -80,8 +81,7 @@ const MyOrdersElektra = (props) =>{
           <Empty />
         ) : (
           <Orders>
-            Si tienes Pedidos
-            {/* <OrdersList orders={userOrders} allowSAC={allowSAC} /> */}
+            <OrdersList orders={userOrders} allowSAC={allowSAC} />
           </Orders>
         )}
       </div>
