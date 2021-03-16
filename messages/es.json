@@ -33,7 +33,7 @@
     "order.shipsTo": "Entrega a",
     "order.total": "Total",
     "order.moreOptions": "Más Opciones",
-    "orders.title": "Pedidos",
+    "orders.title": "Mis Pedidos",
     "orders.edit": "Editar Pedido #{orderNumber}",
     "order.history": "Historial de Cambios",
     "order.change.date": "{date} a las {hour}",

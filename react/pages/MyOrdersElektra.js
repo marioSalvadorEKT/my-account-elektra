@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import Spinner from '../components/commons/Spinner'
 import Orders from '../components/Orders'
 import Error from '../components/commons/Error'
 import scrollKeeper from '../utils/scrollKeeper'
@@ -19,7 +20,7 @@ const headerConfig = () => {
   }
 }
 
-const MyOrdersElektra = (props) =>{
+const MyOrdersElektra = (props) => {
 
   const { allowSAC, userOrders, isLoading, ordersError, fetchOrders } = props
   const emptyOrders = userOrders && !userOrders.length
@@ -60,7 +61,7 @@ const MyOrdersElektra = (props) =>{
   if (isLoading || !userOrders) {
     return renderWrapper(
       <div className="w-100 pt6 tc">
-        <Loader size="small" />
+        <Spinner />
       </div>
     )
   }

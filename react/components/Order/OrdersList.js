@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Loader from '../commons/Loader'
+import Spinner from '../commons/Spinner'
 import React, { Component } from 'react'
 import DetailedOrder from './DetailedOrder'
 import InfiniteScroll from 'react-infinite-scroller'
@@ -21,7 +22,7 @@ class OrdersList extends Component {
       <InfiniteScroll
         loadMore={this.loadMore}
         hasMore={hasMore}
-        loader={<Loader key={currentPage + 1} display="block" size="small" />}
+        loader={<Spinner/>}
       >
         {orders.map(orderId => (
           <DetailedOrder
