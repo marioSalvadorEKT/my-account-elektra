@@ -9,18 +9,19 @@ import { fetchMoreOrders } from '../../actions/order-actions'
 
 
 
-class OrdersList extends Component {
-  loadMore = () => {
-    if (this.props.hasMore) {
-      this.props.fetchMoreOrders(String(this.props.currentPage + 1))
+const OrdersList = (props) => {
+
+  const { orders, hasMore, alwaysActive, allowSAC, currentPage } = props
+
+  const loadMore = () => {
+    if (hasMore) {
+      props.fetchMoreOrders(String(currentPage + 1))
     }
   }
 
-  render() {
-    const { orders, hasMore, alwaysActive, allowSAC, currentPage } = this.props
-    return (
-      <InfiniteScroll
-        loadMore={this.loadMore}
+  return (
+    <InfiniteScroll
+        loadMore={loadMore}
         hasMore={hasMore}
         loader={<Spinner/>}
       >
@@ -33,9 +34,9 @@ class OrdersList extends Component {
           />
         ))}
       </InfiniteScroll>
-    )
-  }
+  )
 }
+
 
 OrdersList.defaultProps = {
   alwaysActive: true,

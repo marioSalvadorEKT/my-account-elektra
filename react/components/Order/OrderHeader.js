@@ -10,6 +10,7 @@ import StatusBadge from '../commons/StatusBadge'
 import FinalPrice from '../commons/FinalPrice'
 import PaymentFlagIcon from '../commons/PaymentFlagIcon'
 import { OrderUtils } from '../../utils'
+import { Link } from 'vtex.my-account-commons/Router'
 
 class OrderHeader extends Component {
   constructor(props) {
@@ -78,7 +79,6 @@ class OrderHeader extends Component {
       storePreferencesData: { currencyCode },
     } = order
 
-    console.log(order)
 
     const paymentMethods = uniq(
       flatten(
@@ -95,25 +95,34 @@ class OrderHeader extends Component {
 
     return (
       <div
-        className={`myo-order-header cf w-100 pa5 ph7-ns bb b--muted-4 bg-muted-5 lh-copy ${activeClasses}`}
+        className={`myo-order-header cf w-100 pa5 ph7-ns bb b--muted-5 bg-muted-4 lh-copy flex items-center ${activeClasses}`}
       >
-        <div className="fl db w-25-ns w-50-s">
-          {isActive && (
+        <div className="w-20">
+          <div className="myo-order-id flex justify-start f5 fw7 c-emphasis">
+            No. {orderId}
+          </div>
+          <div className="myo-seller-order-id dn mb3 mb0-xl tl tr-ns f7 f6-xl fw4 c-muted-1">
+            # {sellerOrderId}
+          </div>
+          {/* {isActive && (
             <div className="w-100 f7 f6-xl fw4 c-muted-1 ttu">
               <FormattedMessage id="order.dateIs" />
             </div>
           )}
           <div className={`db pv0 f6 fw5 c-on-base ${activeType}`}>
-          </div>
+          </div> */}
         </div>
 
-        <div className="fr fl-ns w-50">
-          {isActive && (
+        <div className="w-60">
+          <div className="flex jussify-start">
+            <StatusBadge order={order} />
+          </div>
+          {/* {isActive && (
             <div className="db w-100 f7 f6-xl fw4 c-muted-1 ttu tr tl-ns">
               <FormattedMessage id="order.total" />
             </div>
-          )}
-          <div className={`db w-100 f6 fw5 c-muted-1 tr tl-ns ${activeType}`}>
+          )} */}
+          {/* <div className={`db w-100 f6 fw5 c-muted-1 tr tl-ns ${activeType}`}>
             <FinalPrice
               totals={totals}
               currencyCode={currencyCode}
@@ -130,10 +139,18 @@ class OrderHeader extends Component {
                   />
                 ))}
             </div>
-          </div>
+          </div> */}
         </div>
-        <div className="fl mt3 mt0-ns w-25-ns w-100-s">
-          <div className="myo-order-id mb3 mb0-xl tl tr-ns f7 f6-xl fw4 c-muted-1">
+        <div className="w-20">
+          <Link
+            to={`/orders/${orderId}`}
+            className="myo-details-btn pv4 ph5 br3 f6 fw6 link bg-base c-on-action-primary hover-action-secondary flex justify-center"
+          >
+            <span className="">
+              <FormattedMessage id="order.goToOrderDetails" />
+            </span>
+          </Link>
+          {/* <div className="myo-order-id mb3 mb0-xl tl tr-ns f7 f6-xl fw4 c-muted-1">
             # {orderId}
           </div>
           <div className="myo-seller-order-id dn mb3 mb0-xl tl tr-ns f7 f6-xl fw4 c-muted-1">
@@ -143,7 +160,7 @@ class OrderHeader extends Component {
             <div className="tr-ns mt2-ns">
               <StatusBadge order={order} />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     )

@@ -41,10 +41,10 @@ const StatusBadge = ({ order }) => {
     }
   }
 
-  let styles
+/*  let styles
   let textStyle
 
-  switch (normalizedStatus) {
+   switch (normalizedStatus) {
     case 'normal':
       styles = 'bg-muted-1'
       textStyle = 'c-on-muted-1'
@@ -72,11 +72,11 @@ const StatusBadge = ({ order }) => {
     default:
       styles = 'bg-muted-2'
       textStyle = 'c-on-muted-2'
-  }
+  } */
 
   return (
-    <div className={`dib br2 pv2 ph3 f7 fw5 tc ${styles}`}>
-      <span className={textStyle || 'c-on-base'}>
+    <div className={`flex f6 fw6 tc`}>
+      <span className={'c-emphasis'}>
         <FormattedMessage id={`order.state.${orderState}`} />
       </span>
     </div>

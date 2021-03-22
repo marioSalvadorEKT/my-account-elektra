@@ -6,8 +6,10 @@ const ProductQuantity = ({ quantity, unitMultiplier, measurementUnit }) => {
   const qtd = quantity * unitMultiplier
   return (
     <>
-      <FormattedNumber value={qtd} maximumFractionDigits={3} />{' '}
-      {measurementUnit}
+      <span> (
+        <FormattedNumber value={qtd} maximumFractionDigits={3} />{' '}
+        pieza{(quantity > 1) && "s" }) 
+      </span>
     </>
   )
 }

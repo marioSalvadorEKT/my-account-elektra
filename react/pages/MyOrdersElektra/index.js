@@ -1,21 +1,22 @@
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Spinner from '../components/commons/Spinner'
-import Orders from '../components/Orders'
-import Error from '../components/commons/Error'
-import scrollKeeper from '../utils/scrollKeeper'
-import Loader from '../components/commons/Loader'
+import Spinner from '../../components/commons/Spinner'
+import Orders from '../../components/Orders'
+import Error from '../../components/commons/Error'
+import scrollKeeper from '../../utils/scrollKeeper'
+import Loader from '../../components/commons/Loader'
 import React, { useEffect, useState } from 'react'
-import Empty from '../components/Orders/EmptyState'
-import Greeting from '../components/commons/Greeting'
-import { fetchOrders } from '../actions/order-actions'
-import OrdersList from '../components/Order/OrdersList'
+import Empty from '../../components/Orders/EmptyState'
+import Greeting from '../../components/commons/Greeting'
+import { fetchOrders } from '../../actions/order-actions'
+import OrdersList from '../../components/Order/OrdersList'
 import { ContentWrapper } from 'vtex.my-account-commons'
+import styles from './index.css'
 
 
 const headerConfig = () => {
   return {
-    titleId: 'orders.title',
+    titleId: 'myOrders.title',
     namespace: 'vtex-account__orders-list',
   }
 }
@@ -52,7 +53,7 @@ const MyOrdersElektra = (props) => {
 
   const renderWrapper = children => {
     return (
-      <ContentWrapper {...headerConfig()}>{() => children}</ContentWrapper>
+      <ContentWrapper className={styles.titlePage} {...headerConfig()}>{() => children}</ContentWrapper>
     )
   }
 

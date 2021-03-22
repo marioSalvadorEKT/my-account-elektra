@@ -5,6 +5,14 @@ import { OrderUtils } from '../../utils'
 import ViewAllOrderProductsButton from '../commons/ViewAllOrderProductsButton'
 import OrderProduct from './OrderProduct'
 import OrderActions from './OrderActions'
+import FormattedDate from '../commons/FormattedDate'
+import FinalPrice from '../commons/FinalPrice'
+import { FormattedMessage } from 'react-intl'
+
+import Tag from '../../images/icons/tag.svg';
+import Calendar from '../../images/icons/calendar.svg';
+import Cash from '../../images/icons/cash.svg';
+
 
 const Order = ({ order, alwaysActive, allowSAC }) => {
   const {
@@ -14,8 +22,12 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
     marketplaceItems = [],
     childOrders,
     storePreferencesData: { currencyCode },
+    sellers,
+    creationDate,
+    totals,
+    paymentData
   } = order
-
+  console.log(order)
   if (
     !alwaysActive &&
     (!OrderUtils.isOrderActive(status) ||
@@ -32,8 +44,42 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
       : marketplaceItems.slice(0, MAX_PRODUCTS_SHOWN)
 
   return (
-    <div className="cf pa5 pa6-l bg-base bt-0">
-      <div className="fl w-100 w-70-ns">
+    <div className="cf w-100 pa5 ph7-ns bb b--muted-5 bg-base lh-copy flex items-start ">
+      <div className="w-20">
+          <div className="mv3">
+            <div className="f7 c-muted-2 flex items-center">
+              <img src={Tag} height={23} width={23} alt="Tag" className="mr2"/>
+              <FormattedMessage id="order.sellingBy" />
+            </div>
+            <div className="f6 c-muted-3 fw6">{sellers[0].name}</div>
+          </div>
+          <div className="mv3">
+            <div className="f7 c-muted-2 flex items-center">
+              <img src={Calendar} height={15} width={15} alt="Calendar" className="mr2"/>
+              <div>
+                <FormattedMessage id="order.dateIs" />
+              </div>
+            </div>
+            <div className="f6 c-muted-3 fw6">
+              <FormattedDate date={creationDate} />
+            </div>
+          </div>
+          <div className="mv3">
+            <div className="f7 c-muted-2 flex items-center">
+              <img src={Cash} height={22} width={22} alt="Cash" className="mr2"/>
+              <FormattedMessage id="order.total" />
+            </div>
+            <div className="f6 c-muted-3 fw6">
+              <FinalPrice
+                totals={totals}
+                currencyCode={currencyCode}
+                transactions={paymentData.transactions}
+              />
+            </div>
+            
+          </div>
+      </div>
+      <div className="w-80">
         {products.map((item, index) => (
           <OrderProduct product={item} currency={currencyCode} key={index} />
         ))}
@@ -41,7 +87,6 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
           <ViewAllOrderProductsButton orderId={orderId} />
         )}
       </div>
-      <OrderActions order={order} allowSAC={allowSAC} />
     </div>
   )
 }
