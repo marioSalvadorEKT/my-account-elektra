@@ -143,7 +143,7 @@ class OrderHeader extends Component {
         </div>
         <div className="w-20">
           <Link
-            to={`/orders/${orderId}`}
+            to={`/pedidos/${orderId}`}
             className="myo-details-btn pv4 ph5 br3 f6 fw6 link bg-base c-on-action-primary hover-action-secondary flex justify-center"
           >
             <span className="">

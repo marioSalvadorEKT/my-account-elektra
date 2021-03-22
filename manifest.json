@@ -8,7 +8,9 @@
   "dependencies": {
     "vtex.my-account": "1.x",
     "vtex.styleguide": "9.x",
-    "vtex.my-account-commons": "1.x"
+    "vtex.my-account-commons": "1.x",
+    "vtex.address-form": "3.x",
+    "vtex.totalizer-translator": "2.x"
   },
   "builders": {
     "react": "3.x",
