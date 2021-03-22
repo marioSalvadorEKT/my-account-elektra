@@ -24,7 +24,6 @@ const OrderProduct = (props) => {
     currency
   } = props
 
-  console.log(props.product)
   return (
     <div className="myo-order-product w-100 pb2 pt2 overflow-y-hidden">
       <div className="v-top dib w-20 h-auto">

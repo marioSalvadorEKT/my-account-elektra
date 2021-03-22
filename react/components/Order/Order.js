@@ -27,7 +27,6 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
     totals,
     paymentData
   } = order
-  console.log(order)
   if (
     !alwaysActive &&
     (!OrderUtils.isOrderActive(status) ||

@@ -12,8 +12,6 @@ const DetailedOrder = (props) => {
 
   const { orderData, allowSAC, alwaysActive } = props
 
-  console.log(props)
-
   if (!orderData) {
     return (
       <CollapsedOrder

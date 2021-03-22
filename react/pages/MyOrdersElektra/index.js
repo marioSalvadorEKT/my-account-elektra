@@ -44,8 +44,6 @@ const MyOrdersElektra = (props) => {
     }
   }, [userOrders])
 
-  console.log(props)
-
   const handleCustomerImpersonation = () => {
     fetchOrders()
   }
