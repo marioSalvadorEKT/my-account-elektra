@@ -43,7 +43,7 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
       : marketplaceItems.slice(0, MAX_PRODUCTS_SHOWN)
 
   return (
-    <div className="cf w-100 pa5 ph7-ns bb b--muted-5 bg-base lh-copy flex items-start ">
+    <div className="cf w-100 pa5 ph7-ns bb b--muted-5 bg-base lh-copy flex items-center">
       <div className="w-20">
           <div className="mv3">
             <div className="f7 c-muted-2 flex items-center">

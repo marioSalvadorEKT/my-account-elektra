@@ -1,0 +1,117 @@
+.statusWraper {
+  height: 200px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  border-top: solid 1px #f7f7f7;
+  padding: 17px;
+}
+
+.statusWraper .statusContainer {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.statusWraper .phone {
+  background-color: #00be32;
+  padding-top: 32px;
+}
+
+.statusWraper .statusContainer .phone {
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+}
+
+.statusBlock {
+  width: 10px;
+  height: 10px;
+  margin: 12px;
+  background-color: #e8e8e8;
+  border-radius: 8px;
+  justify-content: center;
+  display: flex;
+  position: relative;
+}
+
+.statusBlock svg {
+  position: absolute;
+  top: -40px;
+  fill: #e8e8e8;
+  width: 32px;
+  height: 32px;
+}
+
+.past {
+  background-color: #00be32;
+}
+
+.past .phone {
+  background: none;
+}
+.past svg {
+  fill: #00be32;
+}
+
+.past .statusText {
+  color: #00be32;
+}
+
+.statusBlock:first-of-type {
+  margin-left: 50px;
+}
+
+.statusBlock:first-of-type .phone {
+  margin-left: 12px;
+}
+
+.statusBlock:last-of-type {
+  margin-right: 50px;
+}
+.statusBlock:last-of-type .phone {
+  margin-right: 50px;
+}
+
+.statusText {
+  width: 28%;
+  min-width: 95px;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 1rem;
+  line-height: 19px;
+  color: #e8e8e8;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.statusText .phone {
+  color: #a5a5a5;
+  min-width: 143px;
+  position: absolute;
+  padding: 0px;
+  left: 32px;
+  text-align: left;
+  top: -24px;
+}
+
+.centralBar {
+  border: 0.5px solid #e8e8e8;
+  width: 25%;
+}
+
+.centralBar .phone {
+  transform: rotate(90deg);
+  width: 20px;
+  position: relative;
+  border-color: #a5a5a5;
+  left: 6px;
+  top: -11px;
+}
+
+.past {
+  border-color: #00be32;
+}

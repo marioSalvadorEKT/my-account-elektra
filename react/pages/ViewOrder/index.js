@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
@@ -34,6 +34,14 @@ import Products from '../../components/Order/Products/index'
 import TrackingProgress from '../../components/commons/TrackingProgress'
 import InvoiceDataSpoiler from '../../components/commons/InvoiceDataSpoiler'
 
+import uniq from 'lodash/uniq'
+import map from 'lodash/map'
+import flatten from 'lodash/flatten'
+
+import TrackingSteaper from '../../components/Order/TrackingSteaper'
+import ItemDetail from '../../components/ItemDetail'
+
+
 const { estimateShipping } = utils
 const {
   ProgressBarSection,
@@ -44,145 +52,217 @@ const {
   constants: { progressBarStates, packageProgressBarStates },
 } = ProgressBarBundle
 
-const headerConfig = ({ intl, order }) => {
-  const orderTitle = intl.formatMessage({ id: 'order' })
+const headerConfig = ({ order, intl }) => {
+  const orderTitle = intl.formatMessage({ id: 'orders.title' })
   const orderNumber = order && order.orderId ? `#${order.orderId}` : ''
   const backButton = {
-    titleId: 'orders.title',
-    path: '/orders',
+    title:
+      order && order.orderId
+        ? intl.formatMessage(
+            { id: 'orders.edit' },
+            { orderNumber: order.orderId }
+          )
+        : orderTitle,
+    path: order && order.orderId ? `/orders/${order.orderId}` : '/orders',
   }
 
   return {
+    title: `No. ${orderNumber}`,
     backButton,
-    title: `${orderTitle} ${orderNumber}`,
-    namespace: 'vtex-account__order-details',
+    namespace: 'vtex-account__edit-order',
   }
 }
 
-class ViewOrder extends Component {
-  state = {
-    showAdditionalPaymentData: false,
-  }
+const ViewOrder = (props) => {
 
-  componentDidMount() {
-    if (!this.props.order) {
-      this.props.fetchOrder(this.props.match.params.orderId, true)
+  const { order, orderError, isLoading, intl } = props
+  const [showAdditionalPaymentData, setShowAdditionalPaymentData] = useState(false)
+
+  useEffect(() => {
+    
+    if (!props.order) {
+      props.fetchOrder(props.match.params.orderId, true)
     } else {
-      this.props.fetchParentOrders(this.props.order, [])
+      props.fetchParentOrders(props.order, [])
     }
     window.addEventListener(
       'callcenterOperator.setCustomer.vtex',
-      this.handleCustomerImpersonation
+      handleCustomerImpersonation
     )
+    
+    return (
+      window.removeEventListener(
+        'callcenterOperator.setCustomer.vtex',
+        handleCustomerImpersonation
+      )
+    )
+  }, [props.match.params.orderId])
+
+  const handleCustomerImpersonation = () => {
+    props.fetchOrders()
+    goToHomePage()
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.match.params.orderId !== this.props.match.params.orderId) {
-      this.props.fetchOrder(this.props.match.params.orderId, true)
-    }
-    window.scrollTo(0, 0)
-  }
-
-  handleCustomerImpersonation = () => {
-    this.props.fetchOrders()
-    this.goToHomePage()
-  }
-
-  goToHomePage = () => {
+  const goToHomePage = () => {
     window.browserHistory.push('/orders')
   }
+  const handleAdditionalPaymentDataClick = () => {
+    setShowAdditionalPaymentData(!showAdditionalPaymentData)
+  }
 
-  componentWillUnmount() {
-    window.removeEventListener(
-      'callcenterOperator.setCustomer.vtex',
-      this.handleCustomerImpersonation
+
+  const renderWrapper = children => {
+    return (
+      <ContentWrapper {...headerConfig({ order, intl })}>
+        {() => children}
+      </ContentWrapper>
     )
   }
 
-  handleAdditionalPaymentDataClick = () => {
-    this.setState(state => {
-      return {
-        showAdditionalPaymentData: !state.showAdditionalPaymentData,
-      }
-    })
+  if (orderError) return renderWrapper(<Error error={orderError} />)
+
+  if (isLoading || !order) {
+    return renderWrapper(
+      <div className="w-100 pt6 tc">
+        <Spinner/>
+      </div>
+    )
   }
 
-  render() {
-    const { showAdditionalPaymentData } = this.state
-    const { order, orderError, isLoading, intl } = this.props
+  if (!order || !order.orderId) {
+    return null
+  }
 
-    const renderWrapper = children => {
-      return (
-        <ContentWrapper {...headerConfig({ order, intl })}>
-          {() => children}
-        </ContentWrapper>
+  const {
+    paymentData,
+    status,
+    creationDate,
+    totals,
+    shippingData: { address, logisticsInfo: logisticsShipping },
+    storePreferencesData: { currencyCode },
+    paymentData: { transactions },
+    allowCancellation,
+    sellers,
+    changesAttachment,
+    items,
+  } = order
+
+  const paymentMethods = uniq(
+    flatten(
+      map(paymentData.transactions, transaction =>
+        map(transaction.payments, payment => payment)
       )
-    }
+    ),
+    'paymentSystem'
+  )
 
-    if (orderError) return renderWrapper(<Error error={orderError} />)
+  const bankInvoiceUrl = OrderUtils.getBankInvoiceUrl(transactions)
+  const showPrintBankInvoiceButton = allowCancellation && bankInvoiceUrl
+  const packages = packagify(order)
+  const hasProductChanges = changesAttachment && changesAttachment.changesData
+  const hasReplacement = props.history && props.history.length > 0
+  
+  const itemsNoCanceled = items.filter((item) => !item.isCanceled);
+  const itemsCanceled = items.filter((item) => item.isCanceled);
 
-    if (isLoading || !order) {
-      return renderWrapper(
-        <div className="w-100 pt6 tc">
-          <Spinner/>
-        </div>
-      )
-    }
-
-    if (!order || !order.orderId) {
-      return null
-    }
-
-    const {
-      paymentData,
-      status,
-      creationDate,
-      totals,
-      shippingData: { address },
-      storePreferencesData: { currencyCode },
-      paymentData: { transactions },
-      allowCancellation,
-      sellers,
-      changesAttachment,
-      items,
-    } = order
-
-    const bankInvoiceUrl = OrderUtils.getBankInvoiceUrl(transactions)
-
-    const showPrintBankInvoiceButton = allowCancellation && bankInvoiceUrl
-    const packages = packagify(order)
-
-    const hasProductChanges = changesAttachment && changesAttachment.changesData
-    const hasReplacement = this.props.history && this.props.history.length > 0
-
-    return renderWrapper(
-      <div className="center w-100">
-        <div className="fl w-40-ns pv3 pl0">
-          <time className="c-on-base">
-            <FormattedDate date={creationDate} style="long" />{' '}
-            <StatusBadge order={order} />
+  return renderWrapper(
+    <div className="center w-100">
+      <div className="center w-100 flex">
+        <div className=" w-30 w-40-ns pv3 pl0">
+          <time className="c-on-bas">
+            <div className="pb3 f5 fw7 c-muted-2">
+              <FormattedMessage id="order.status" />
+            </div>
+            <div className="myo-order-id flex justify-start f6 pb3 fw7 c-emphasis">
+              No. {order.orderId}
+            </div>
           </time>
         </div>
 
-        <div className="w-100 fl w-60-ns pv3-ns pr0">
-          <OrderButtons order={order} allowSAC />
+        <div className="w-40 w-40-ns pv3-ns pr0 f6">
+          <div className="fw6 pb3">
+            <StatusBadge order={order} />
+          </div>
+          <>
+            <span className="fw4 c-muted-2 pb3">
+              <FormattedMessage id="order.dateIs"/> {' '}
+            </span>
+            <span className="fw6 c-muted-3 pb3">
+              <FormattedDate date={creationDate} style="long" />
+            </span>
+          </>
         </div>
 
-        <section className="w-100 fl mt5 mb2-l mb2-xl">
-          <article className="w-100 fl w-third-m pr3-m mb5">
-            <section className="pa5 ba bw1 b--muted-5 h4-plus overflow-y-scroll bg-base">
-              <h3 className="c-on-base mt2 mb5 tracked-mega lh-solid ttu f6">
+        <div className="w-30 w-40-ns pv3-ns pr0 f6 items-end justify-end flex">
+          <span className="fw4 c-muted-2 pb3">
+            <FormattedMessage id="order.sellerName" />{' '}
+          </span>
+          <span className="fw6 c-muted-3 pb3">&nbsp;{sellers[0].name} </span>
+        </div>
+      </div>
+      
+      <div className="center w-100 ba flex flex-column bw1 b--muted-4">
+
+        <TrackingSteaper status={status} packageAttachment={order.packageAttachment} />
+
+        <section className="w-100 fl mt5 mb2-l mb2-xl flex">
+        <article className="w-100 w-third-m">
+            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex flex-column items-start">
+              <h3 className="c-muted-2 mv4 f6">
+                <FormattedMessage id="order.deliveryType" />
+              </h3>
+              <div className="mt2">
+                {logisticsShipping[0].selectedSla}
+              </div>
+            </section>
+          </article>
+          <article className="w-100 w-third-m">
+            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex flex-column items-start">
+              <h3 className="c-muted-2 mv4 f6">
                 <FormattedMessage id="order.shippingInfo" />
               </h3>
               <Address address={address} />
             </section>
           </article>
-          <article className="w-100 fl w-third-m pr3-m mb5">
-            <section className="pa5 ba bw1 b--muted-5 overflow-y-scroll bg-base h4-plus">
-              <h3 className="c-on-base mt2 mb5 tracked-mega lh-solid ttu f6">
+          {/* <Totals
+            totals={totals}
+            currencyCode={currencyCode}
+            transactions={paymentData.transactions}
+          /> */}
+          <article className="w-100 w-third-m">
+            <section className="pa5 b--muted-5 overflow-y-scroll h4-plus flex flex-column items-start">
+              <h3 className="c-muted-2 mv4 f6">
                 <FormattedMessage id="order.paymentInfo" />
               </h3>
-              {paymentData &&
+              <div>
+                <span className="mt2">{transactions[0].payments[0].paymentSystemName}</span>
+              </div>
+              {/* Mario Servicios */}
+              {/* {!order.hitch && (
+                <>
+                  {payment.paymentSystem !== '203' && (
+                    <div className={styles.headerResum}>
+                      <span>Monto de pago</span>
+                      <br />
+                      <strong>$ {currency(order.value / 100)}.00</strong>
+                    </div>
+                  )}
+                  <div className={styles.headerResum}>
+                    <span>
+                      Número de pagos:
+                      <strong>
+                        {' '}
+                        {order.paymentData.transactions[0].payments[0].installments}
+                      </strong>
+                    </span>
+                  </div>
+                  <div className={styles.headerResum}>
+                    <strong>{paymentInfo(order.paymentData.transactions[0].payments[0])}</strong>
+                  </div>
+                </>
+              )} */}
+              
+              {/* {paymentData &&
                 paymentData.transactions.length > 0 &&
                 paymentData.transactions[0].payments.map(
                   ({
@@ -230,263 +310,371 @@ class ViewOrder extends Component {
                           <PaymentConnectorResponses
                             data={connectorResponses || {}}
                             isOpen={showAdditionalPaymentData}
-                            onClick={this.handleAdditionalPaymentDataClick}
+                            onClick={handleAdditionalPaymentDataClick}
                           />
                         )}
                       </div>
                     </div>
                   )
-                )}
-              {showPrintBankInvoiceButton && (
-                <a
-                  href={bankInvoiceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="myo-invoice-btn fr cf db link tl mt3 pv2 br2 w-100 f6 fw4"
-                >
-                  <button
-                    className="fl dib ba bw1 b--muted-4 br-pill hh2 w2 lh-solid bg-base hover-bg-action-secondary"
-                    style={{
-                      boxShadow: '0px 0px 15px -5px rgba(0,0,0,0.20)',
-                    }}
-                  >
-                    <svg
-                      className="hh1 w1"
-                      viewBox="0 0 17 17"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <g fill="none" fillRule="evenodd">
-                        <path
-                          d="M15.895 0H1.105C.495 0 0 .66 0 1.477v14.046C0 16.34.494 17 1.104 17h14.79c.61 0 1.106-.66 1.106-1.477V1.477C17 .66 16.505 0 15.895 0z"
-                          fill="#555"
-                        />
-                        <path
-                          fill="#FFF"
-                          d="M13 3h2v11h-2zm-2 0h1v11h-1zM7 3h3v11H7zM4 3h2v11H4zM2 3h1v11H2z"
-                        />
-                      </g>
-                    </svg>
-                  </button>
-                  <span className="fl dib pv2 ml3 c-link">
-                    <FormattedMessage id="order.printBankInvoice" />
-                  </span>
-                </a>
-              )}
+                )} */}
             </section>
           </article>
-          <Totals
-            totals={totals}
-            currencyCode={currencyCode}
-            transactions={paymentData.transactions}
-          />
         </section>
+      </div>
 
-        <OrderStatus
-          status={status}
-          packages={packages}
-          render={index => (
-            <ProgressBarSection
-              states={generateProgressBarStates(
-                progressBarStates,
-                index,
-                packages
-              )}
-              currentState={index}
-              hasFinished={OrderUtils.isOrderDelivered(order)}
-            />
-          )}
-        />
+      {packages.map((deliveryPackage, index) => {
+        const shippingEstimate =
+          deliveryPackage.deliveryWindow || estimateShipping(deliveryPackage)
+        const isPickup = deliveryPackage.deliveryChannel === 'pickup-in-point'
 
-        {packages.map((deliveryPackage, index) => {
-          const shippingEstimate =
-            deliveryPackage.deliveryWindow || estimateShipping(deliveryPackage)
-          const isPickup = deliveryPackage.deliveryChannel === 'pickup-in-point'
+        //packageAttachment logica
+        let packagesAux = {};
+        order.packageAttachment.packages.forEach((pack, i) => {
+          if (!packagesAux.hasOwnProperty(pack.trackingNumber)) {
+            packagesAux[pack.trackingNumber] = {
+              courier: pack.courier,
+              items: [],
+              deliveredDate: pack.courierStatus && pack.courierStatus.deliveredDate ,
+              trackingNumber: pack.trackingNumber,
+              trackingUrl: getTrackingLink(pack.courier, pack.trackingNumber)
+            };
+          }
 
+          pack.items.forEach((item) => {
+            const orderItem = order.items[item.itemIndex];
+            if (orderItem && !orderItem.isCanceled) {
+              packagesAux[pack.trackingNumber].items.push(orderItem);
+            }
+          });
+        });
+        const packagesArray = Object.getOwnPropertyNames(packagesAux).sort();
+        const packagesMap = packagesArray.map((p, index) => {
+          const pack = packages[p];
           return (
-            <div
-              className="w-100 pv7 fl"
-              key={`${deliveryPackage.selectedSla}_${index}`}
-            >
-              <div className="flex flex-column">
-                <div className="mw-100 myo-margin-right">
-                  <h2 className="f4 mb0 lh-copy">
-                    <FormattedMessage id="order.package.heading" />
-                    {packages.length > 1 && (
-                      <span>
-                        {` ${index + 1} `}
-                        <FormattedMessage id="order.package.numbering" />{' '}
-                        {packages.length}
-                      </span>
+            <div key={index}>
+              {pack.items.length > 0 && (
+                <div className={styles.productsContainerGeneral}>
+                  {pack.items.map((item) => (
+                    <ItemDetail key={item.id} {...{ ...item, status }} />
+                  ))}
+                  <div className={styles.deliveryWrapper}>
+                    <div className={`${styles.deliveryHeader} ${styles[breakpoint]}`}>
+                      {order.shippingData.logisticsInfo[0].selectedSla !== 'Recoger en Tienda' && (
+                        <div className={styles.courier}>
+                          <div className={styles.line}>
+                            En proceso de entrega con <div className={styles.data}>{pack.courier}</div>
+                          </div>
+                          <div className={styles.line}>
+                            No. Guía: <div className={styles.data}>{pack.trackingNumber}</div>
+                          </div>
+                        </div>
+                      )}
+                      {pack.trackingUrl && (
+                        <a
+                          target="_blank"
+                          href={pack.trackingUrl}
+                          rel="noopener noreferrer"
+                          className={styles.buttonTrack}>
+                          Ir al sitio de la paquetería
+                        </a>
+                      )}
+                    </div>
+                    {/*orderStatus.index < 5 && !!pack.courier && (
+                      <div className={styles.deliveryText}>
+                        Recíbelo entre <b>8-12 Jun</b>
+                      </div>
+                    )*/}
+                    {orderStatus.index >= 5 && (
+                      <div className={styles.deliveryText}>
+                        Entregado el <b>{formatDate(pack.deliveredDate)}</b>
+                      </div>
                     )}
-                  </h2>
+                    <div className={styles.deliveryStatus}>
+                      <div
+                        className={`${styles.statusBlock} ${styles[breakpoint]} ${
+                          orderStatus.index >= 4 ? styles.past : styles.gray
+                        }`}>
+                        <div className={`${styles.statusText} ${styles[breakpoint]}`}>
+                          <span>Enviado</span>
+                        </div>
+                      </div>
+                      <div
+                        className={`${styles.centralBar} ${styles[breakpoint]} ${
+                          orderStatus.index >= 5 ? styles.past : styles.gray
+                        }`}
+                      />
+                      <div
+                        className={`${styles.statusBlock} ${styles[breakpoint]} ${
+                          orderStatus.index >= 5 ? styles.past : styles.gray
+                        }`}>
+                        <div className={`${styles.statusText} ${styles[breakpoint]}`}>
+                          <span>Entregado</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/*pack.courier === 'ektnvia' && (
+                      <div className={styles.statusTableWrapper}>
+                        {(isPhone && <div className={styles.statusTableContainer}></div>) || (
+                          <div className={styles.statusTableContainer}>
+                            <table className={styles.statusTable}>
+                              <thead>
+                                <tr>
+                                  <th></th>
+                                  <th>Estatus</th>
+                                  <th>Ubicación</th>
+                                  <th>Fecha y hora</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>1</td>
+                                  <td>Envío recolectado</td>
+                                  <td>Cedis Tepoztlán</td>
+                                  <td>1 junio de 2020 a las 16:30 hrs.</td>
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>Producto en tránsito</td>
+                                  <td>En tránsito</td>
+                                  <td>2 junio de 2020 a las 16:30 hrs.</td>
+                                </tr>   
+                                <tr>
+                                  <td>3</td>
+                                  <td>
+                                    Producto dañado<span className={styles.statusTableAsterisk}>*</span>
+                                  </td>
+                                  <td>En tránsito</td>
+                                  <td>8 junio de 2020 a las 6:00 hrs.</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                        {true && (
+                          <div className={styles.statusTableError}>
+                            *Tuvimos un incidente con tu pedido, te contactaremos para solucionar tu caso
+                            en las próximas horas.
+                          </div>
+                        )}
+                      </div>
+                        )*/}
+                  </div>
                 </div>
-                <div className="flex flex-column flex-row-l">
-                  <div>
-                    {shippingEstimate && (
-                      <span className="mr3">
-                        {shippingEstimate.startDateUtc ? (
-                          <span>
-                            {this.props.intl.formatMessage(
+              )}
+            </div>
+          );
+        });
+        //packageAttachment logica
+
+        console.log(order)
+        return (
+          <div
+            className="w-100 pv7 fl"
+            key={`${deliveryPackage.selectedSla}_${index}`}
+          >
+            <div className="flex flex-column">
+              {/* <div className="mw-100 myo-margin-right">
+                <h2 className="f4 mb0 lh-copy">
+                  <FormattedMessage id="order.package.heading" />
+                  {packages.length > 1 && (
+                    <span>
+                      {` ${index + 1} `}
+                      <FormattedMessage id="order.package.numbering" />{' '}
+                      {packages.length}
+                    </span>
+                  )}
+                </h2>
+              </div>
+              <div className="flex flex-column flex-row-l">
+                <div>
+                  {shippingEstimate && (
+                    <span className="mr3">
+                      {shippingEstimate.startDateUtc ? (
+                        <span>
+                          {props.intl.formatMessage(
+                            {
+                              id: `order.shippingEstimate${
+                                isPickup ? '.pickup' : ''
+                              }.window`,
+                            },
+                            {
+                              date: props.intl.formatDate(
+                                shippingEstimate.startDateUtc,
+                                {
+                                  // IMPORTANT: if the selected shipping option has a delivery window,
+                                  // the time MUST be displayed with UTC.
+                                  day: '2-digit',
+                                  month: 'long',
+                                  timeZone: 'UTC',
+                                  weekday: 'long',
+                                }
+                              ),
+                              startHour: props.intl.formatTime(
+                                shippingEstimate.startDateUtc,
+                                // IMPORTANT: if the selected shipping option has a delivery window,
+                                // the time MUST be displayed with UTC.
+                                { timeZone: 'UTC' }
+                              ),
+                              endHour: props.intl.formatTime(
+                                shippingEstimate.endDateUtc,
+                                // IMPORTANT: if the selected shipping option has a delivery window,
+                                // the time MUST be displayed with UTC.
+                                { timeZone: 'UTC' }
+                              ),
+                            }
+                          )}
+                        </span>
+                      ) : (
+                        shippingEstimate.label ||
+                        (shippingEstimate.isEstimateInHoursOrMinutes ? (
+                          <span className="ib">
+                            {props.intl.formatMessage(
                               {
                                 id: `order.shippingEstimate${
                                   isPickup ? '.pickup' : ''
-                                }.window`,
+                                }.withTime`,
                               },
                               {
-                                date: this.props.intl.formatDate(
-                                  shippingEstimate.startDateUtc,
-                                  {
-                                    // IMPORTANT: if the selected shipping option has a delivery window,
-                                    // the time MUST be displayed with UTC.
-                                    day: '2-digit',
-                                    month: 'long',
-                                    timeZone: 'UTC',
-                                    weekday: 'long',
-                                  }
-                                ),
-                                startHour: this.props.intl.formatTime(
-                                  shippingEstimate.startDateUtc,
-                                  // IMPORTANT: if the selected shipping option has a delivery window,
-                                  // the time MUST be displayed with UTC.
-                                  { timeZone: 'UTC' }
-                                ),
-                                endHour: this.props.intl.formatTime(
-                                  shippingEstimate.endDateUtc,
-                                  // IMPORTANT: if the selected shipping option has a delivery window,
-                                  // the time MUST be displayed with UTC.
-                                  { timeZone: 'UTC' }
-                                ),
-                              }
-                            )}
-                          </span>
-                        ) : (
-                          shippingEstimate.label ||
-                          (shippingEstimate.isEstimateInHoursOrMinutes ? (
-                            <span className="ib">
-                              {this.props.intl.formatMessage(
-                                {
-                                  id: `order.shippingEstimate${
-                                    isPickup ? '.pickup' : ''
-                                  }.withTime`,
-                                },
-                                {
-                                  date: this.props.intl.formatDate(
-                                    shippingEstimate.date,
-                                    // IMPORTANT: shippingEstimateDate should be displayed with the
-                                    // the current browser timezone. NOT UTC!
-                                    {
-                                      day: '2-digit',
-                                      month: '2-digit',
-                                      year: '2-digit',
-                                    }
-                                  ),
+                                date: props.intl.formatDate(
+                                  shippingEstimate.date,
                                   // IMPORTANT: shippingEstimateDate should be displayed with the
                                   // the current browser timezone. NOT UTC!
-                                  hour: this.props.intl.formatTime(
-                                    shippingEstimate.date
-                                  ),
-                                }
-                              )}
-                            </span>
-                          ) : (
-                            this.props.intl.formatMessage(
-                              {
-                                id: `order.shippingEstimate${
-                                  isPickup ? '.pickup' : ''
-                                }.noTime`,
-                              },
-                              {
-                                date: this.props.intl.formatDate(
-                                  shippingEstimate.date,
                                   {
-                                    timeZone: 'UTC',
                                     day: '2-digit',
                                     month: '2-digit',
                                     year: '2-digit',
                                   }
                                 ),
+                                // IMPORTANT: shippingEstimateDate should be displayed with the
+                                // the current browser timezone. NOT UTC!
+                                hour: props.intl.formatTime(
+                                  shippingEstimate.date
+                                ),
                               }
-                            )
-                          ))
-                        )}
-                      </span>
-                    )}
-                    <span className="dib br2 pv2 mt2 ph3 f7 f6-xl fw5 nowrap bg-muted-1 c-on-muted-1">
-                      {getDeliveryName(deliveryPackage)}
-                    </span>
-                  </div>
-                  <div className="w-40-l w-40-xl w-100-m w-100-s pl6-l">
-                    <PackageStatus
-                      status={status}
-                      pack={deliveryPackage.package || {}}
-                      packages={packages}
-                      render={i => (
-                        <PackageProgressBarSection
-                          states={generatePackageProgressBarStates(
-                            packageProgressBarStates,
-                            i,
-                            deliveryPackage.package
-                          )}
-                          currentState={i}
-                        />
+                            )}
+                          </span>
+                        ) : (
+                          props.intl.formatMessage(
+                            {
+                              id: `order.shippingEstimate${
+                                isPickup ? '.pickup' : ''
+                              }.noTime`,
+                            },
+                            {
+                              date: props.intl.formatDate(
+                                shippingEstimate.date,
+                                {
+                                  timeZone: 'UTC',
+                                  day: '2-digit',
+                                  month: '2-digit',
+                                  year: '2-digit',
+                                }
+                              ),
+                            }
+                          )
+                        ))
                       )}
-                    />
-                  </div>
+                    </span>
+                  )}
+                  <span className="dib br2 pv2 mt2 ph3 f7 f6-xl fw5 nowrap bg-muted-1 c-on-muted-1">
+                    {getDeliveryName(deliveryPackage)}
+                  </span>
                 </div>
-
-                {deliveryPackage.package &&
-                  deliveryPackage.package.courierStatus && (
-                    <TrackingProgress
-                      courierStatus={deliveryPackage.package.courierStatus}
-                    />
-                  )}
-
-                {deliveryPackage.package &&
-                  deliveryPackage.package.trackingNumber && (
-                    <TrackingDataSpoiler
-                      trackingUrl={deliveryPackage.package.trackingUrl}
-                      trackingNumber={deliveryPackage.package.trackingNumber}
-                    />
-                  )}
-
-                {deliveryPackage.package &&
-                  deliveryPackage.package.invoiceUrl && (
-                    <InvoiceDataSpoiler
-                      invoiceUrl={deliveryPackage.package.invoiceUrl}
-                    />
-                  )}
-              </div>
-              <Products
-                items={deliveryPackage.items}
-                currencyCode={currencyCode}
-                sellers={sellers}
-              />
-              {(hasProductChanges || hasReplacement) && (
-                <div className="w-100 mv7 fl">
-                  <h2 className="f4 ttu">
-                    <FormattedMessage id="order.history" />
-                  </h2>
-                  {hasProductChanges && (
-                    <ChangesHistory
-                      changes={changesAttachment.changesData}
-                      items={items}
-                      totals={totals}
-                      currencyCode={currencyCode}
-                      creationDate={creationDate}
-                    />
-                  )}
-                  {hasReplacement && (
-                    <ReplacementHistory history={this.props.history} />
-                  )}
+                <div className="w-40-l w-40-xl w-100-m w-100-s pl6-l">
+                  <PackageStatus
+                    status={status}
+                    pack={deliveryPackage.package || {}}
+                    packages={packages}
+                    render={i => (
+                      <PackageProgressBarSection
+                        states={generatePackageProgressBarStates(
+                          packageProgressBarStates,
+                          i,
+                          deliveryPackage.package
+                        )}
+                        currentState={i}
+                      />
+                    )}
+                  />
                 </div>
-              )}
+              </div> */}
+
+              {deliveryPackage.package &&
+                deliveryPackage.package.courierStatus && (
+                  <TrackingProgress
+                    courierStatus={deliveryPackage.package.courierStatus}
+                  />
+                )}
+
+              {deliveryPackage.package &&
+                deliveryPackage.package.trackingNumber && (
+                  <TrackingDataSpoiler
+                    trackingUrl={deliveryPackage.package.trackingUrl}
+                    trackingNumber={deliveryPackage.package.trackingNumber}
+                  />
+                )}
+
+              {deliveryPackage.package &&
+                deliveryPackage.package.invoiceUrl && (
+                  <InvoiceDataSpoiler
+                    invoiceUrl={deliveryPackage.package.invoiceUrl}
+                  />
+                )}
             </div>
-          )
-        })}
-      </div>
-    )
-  }
+
+            {/*Mario Modluo elektra*/}
+
+            {
+              packagesArray.length > 0 ? packagesMap : 
+              <div className="center w-100 ba flex flex-column bw1 b--muted-4">
+              {itemsNoCanceled.map((item) => (
+                <ItemDetail key={item.id} {...{ ...item, status }} currencyCode={currencyCode} />
+              ))}
+              </div>
+            }
+            
+            {!!itemsCanceled.length && (
+              <div className={``}>
+                Solicitud de cancelación
+              </div>
+            )}
+            {!!itemsCanceled.length && (
+              <div className="">
+                {itemsCanceled.map((item) => (
+                  <span>Hay items Cancelados</span>
+                ))}
+              </div>
+            )}
+
+            {/*Mario Modluo elektra*/}
+
+
+            {/* {(hasProductChanges || hasReplacement) && (
+              <div className="w-100 mv7 fl">
+                <h2 className="f4 ttu">
+                  <FormattedMessage id="order.history" />
+                </h2>
+                {hasProductChanges && (
+                  <ChangesHistory
+                    changes={changesAttachment.changesData}
+                    items={items}
+                    totals={totals}
+                    currencyCode={currencyCode}
+                    creationDate={creationDate}
+                  />
+                )}
+                {hasReplacement && (
+                  <ReplacementHistory history={props.history} />
+                )}
+              </div>
+            )} */}
+          </div>
+        )
+      })}
+    </div>
+  )
 }
+  
 
 ViewOrder.propTypes = {
   history: PropTypes.array,

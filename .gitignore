@@ -29,8 +29,8 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # App specific
-react/node_modules/
-node_modules/
+
+node_modules
 docs/_book/
 .tmp
 .idea
@@ -44,3 +44,4 @@ yarn-error.log
 *.orig
 package-lock.json
 yarn.lock
+react/node_modules/*

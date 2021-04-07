@@ -31,9 +31,9 @@ const Totals = props => {
   const newTotals = interest.value > 0 ? [...totals, interest] : totals
 
   return (
-    <article className="w-100 fl w-third-m mb5">
-      <section className="pa5 ba bw1 b--muted-5 overflow-y-scroll bg-base h4-plus">
-        <h3 className="c-on-base mt2 mb5 tracked-mega lh-solid ttu f6">
+    <article className="w-100 w-third-m">
+      <section className="pa5 overflow-y-scroll h4-plus">
+        <h3 className="c-on-base tracked-mega lh-solid  f6">
           <FormattedMessage id="order.summary.title" />
         </h3>
         {newTotals &&
