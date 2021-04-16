@@ -1,4 +1,4 @@
-import React, { Component, Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
@@ -40,6 +40,7 @@ import flatten from 'lodash/flatten'
 
 import TrackingSteaper from '../../components/Order/TrackingSteaper'
 import ItemDetail from '../../components/ItemDetail'
+import { Link } from 'vtex.my-account-commons/Router'
 
 
 const { estimateShipping } = utils
@@ -52,7 +53,7 @@ const {
   constants: { progressBarStates, packageProgressBarStates },
 } = ProgressBarBundle
 
-const headerConfig = ({ order, intl }) => {
+export const headerConfig = ({ order, intl }) => {
   const orderTitle = intl.formatMessage({ id: 'orders.title' })
   const orderNumber = order && order.orderId ? `#${order.orderId}` : ''
   const backButton = {
@@ -63,13 +64,13 @@ const headerConfig = ({ order, intl }) => {
             { orderNumber: order.orderId }
           )
         : orderTitle,
-    path: order && order.orderId ? `/orders/${order.orderId}` : '/orders',
+    path: order && order.orderId ? `/pedidos/${order.orderId}` : '/pedidos',
   }
 
   return {
     title: `No. ${orderNumber}`,
     backButton,
-    namespace: 'vtex-account__edit-order',
+    namespace: 'vtex-account__edit-order-id',
   }
 }
 
@@ -104,7 +105,7 @@ const ViewOrder = (props) => {
   }
 
   const goToHomePage = () => {
-    window.browserHistory.push('/orders')
+    window.browserHistory.push('/pedidos')
   }
   const handleAdditionalPaymentDataClick = () => {
     setShowAdditionalPaymentData(!showAdditionalPaymentData)
@@ -164,6 +165,12 @@ const ViewOrder = (props) => {
   
   const itemsNoCanceled = items.filter((item) => !item.isCanceled);
   const itemsCanceled = items.filter((item) => item.isCanceled);
+
+  const CancelOrderButton = allowCancellation ? (
+    <Link className="no-underline flex bg-muted-4 pv5 ph6 dark-gray" to={`/pedidos/seleccionar-articulos/${order.orderId}`}>
+        <FormattedMessage id="order.cancelOrder"  />
+    </Link>
+  ) : null
 
   return renderWrapper(
     <div className="center w-100">
@@ -321,11 +328,13 @@ const ViewOrder = (props) => {
           </article>
         </section>
       </div>
+      <div className="flex justify-end items-center pv7">
+        {CancelOrderButton}
+      </div>
+        
 
       {packages.map((deliveryPackage, index) => {
-        const shippingEstimate =
-          deliveryPackage.deliveryWindow || estimateShipping(deliveryPackage)
-        const isPickup = deliveryPackage.deliveryChannel === 'pickup-in-point'
+
 
         //packageAttachment logica
         let packagesAux = {};
@@ -469,7 +478,7 @@ const ViewOrder = (props) => {
         console.log(order)
         return (
           <div
-            className="w-100 pv7 fl"
+            className="w-100 fl"
             key={`${deliveryPackage.selectedSla}_${index}`}
           >
             <div className="flex flex-column">

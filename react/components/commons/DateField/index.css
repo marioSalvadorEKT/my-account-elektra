@@ -1,0 +1,81 @@
+.TextFieldDateRoot {
+  width: 100%;
+  width: 310px;
+  height: 36px;
+  position: relative;
+  border: 1px solid #a5a5ab;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.TextFieldDateRoot.open label {
+  transform: scale(0.77) translate(0px, -26px);
+}
+
+.TextFieldDateRoot.focus label {
+  color: #ff5c60;
+}
+
+.TextFieldDateRoot.focus input {
+  border-bottom: 2px solid #ff5c60;
+}
+
+.TextFieldDateRoot.focus input::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.TextFieldDateRoot.error label {
+  color: red;
+}
+
+.TextFieldDateRoot.error input {
+  border-bottom: 2px solid red;
+}
+
+.TextFieldDateRoot.phone {
+  width: 290px;
+}
+
+.TextFieldDateRoot.desktop {
+  width: 100%;
+}
+
+.TextFieldDateRoot.tablet {
+  width: 100%;
+}
+
+.TextFieldDateRoot label {
+  position: relative;
+  top: 25px;
+  left: -14px;
+  cursor: text;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 600;
+  color: #666666;
+  width: 250px;
+}
+
+.TextFieldDateRoot input {
+  position: relative;
+  width: 90%;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #f39c12;
+  margin: 0;
+  padding: 0;
+  top: 8px;
+  color: rgba(0, 0, 0, 0.87);
+  transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  background-color: transparent;
+  font-style: italic;
+  font-size: 14px;
+  color: #666666;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

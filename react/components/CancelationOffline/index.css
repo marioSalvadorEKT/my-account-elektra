@@ -1,0 +1,260 @@
+.cancelNotAllowed {
+  margin-left: 16px;
+}
+
+.breadcrumb {
+  display: flex;
+  margin: 65px 0px 75px 0px;
+  justify-content: center;
+  align-items: center;
+}
+
+.breadcrumb.tablet {
+  margin: 31px 0px 50px 0px;
+}
+
+.breadcrumb.phone {
+  margin: 31px 0px 85px 0px;
+}
+
+.lineInitial {
+  height: 2px;
+  background-color: #a5a5a5;
+  position: relative;
+  margin-top: 4px;
+  width: 274px;
+}
+
+.line {
+  height: 2px;
+  background-color: #03a322;
+  position: relative;
+  margin-top: 4px;
+  width: 274px;
+}
+
+.initial {
+  width: 16px;
+  height: 16px;
+  background-color: #03a322;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+.final {
+  width: 12px;
+  height: 12px;
+  background-color: #a5a5a5;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+.label {
+  top: 11px;
+  position: relative;
+  left: 200px;
+  color: #a5a5a5;
+}
+
+.label.phone {
+  width: 120px;
+  text-align: center;
+  left: 220px;
+  line-height: 18px;
+}
+
+.labelInitial {
+  bottom: 8px;
+  position: relative;
+  right: 74px;
+  color: #03a322;
+}
+
+.labelInitial.phone {
+  width: 120px;
+  text-align: center;
+  bottom: 0px;
+  position: absolute;
+  top: 11px;
+  right: 221px;
+  line-height: 18px;
+}
+
+.wrapperButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.wrapperButtons.phone {
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.wrapperButtonsCancelation {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 30px;
+}
+
+.wrapperButtonsCancelation.phone {
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.disagreeButton {
+  width: 166px;
+  height: 36px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.35);
+  background-color: #f7f7f7;
+  text-align: center;
+  line-height: 36px;
+  font-weight: 600;
+  color: #333333;
+  margin-right: 16px;
+}
+
+.disagreeButton.phone {
+  width: 141px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  margin-bottom: 25px;
+}
+
+.agreeButton {
+  width: 166px;
+  height: 36px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.35);
+  background-color: #f7f7f7;
+  text-align: center;
+  line-height: 36px;
+  font-weight: 600;
+  color: #333333;
+  cursor: pointer;
+}
+
+.agreeButton.phone {
+  width: 159px;
+}
+
+.agreeButtonDisable {
+  width: 166px;
+  height: 36px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+  background-color: #fbfbfb;
+  text-align: center;
+  line-height: 36px;
+  font-weight: 600;
+  color: #333333;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.agreeButtonDisable.phone {
+  width: 141px;
+}
+
+.agreeButtonD {
+  width: 316px;
+  height: 36px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.35);
+  background-color: #f7f7f7;
+  text-align: center;
+  line-height: 36px;
+  font-weight: 600;
+  color: #333333;
+  margin-left: 16px;
+}
+
+.cause {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666666;
+  line-height: 18px;
+  margin-bottom: 20px;
+}
+
+.required {
+  color: #e1251b;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.normal {
+  color: #03a322;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.userInfo {
+  height: 53px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.userInfo.phone {
+  height: 150px;
+  margin-top: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.userInfo.tablet {
+  height: auto;
+  margin-top: 26px;
+  justify-content: space-around;
+}
+
+.userInfo.phone {
+  margin-top: 26px;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.dropDown {
+  width: 50%;
+}
+
+.dropDown.tablet {
+  width: 100%;
+}
+
+.dropDown.phone {
+  width: 100%;
+}
+
+@media (max-width: 389px) {
+  .lineInitial {
+    width: 220px;
+  }
+
+  .label.phone {
+    left: 164px;
+  }
+
+  .labelInitial.phone {
+    right: 164px;
+  }
+}
+
+@media (max-width: 320px) {
+  .lineInitial {
+    width: 200px;
+  }
+
+  .label.phone {
+    left: 138px;
+  }
+
+  .labelInitial.phone {
+    right: 146px;
+  }
+}

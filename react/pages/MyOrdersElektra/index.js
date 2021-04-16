@@ -25,6 +25,10 @@ const MyOrdersElektra = (props) => {
   const { allowSAC, userOrders, isLoading, ordersError, fetchOrders } = props
   const emptyOrders = userOrders && !userOrders.length
 
+  const handleCustomerImpersonation = () => {
+    fetchOrders()
+  }
+
   useEffect(() => {
     if (!userOrders) {
       fetchOrders()
@@ -42,10 +46,6 @@ const MyOrdersElektra = (props) => {
       )
     }
   }, [userOrders])
-
-  const handleCustomerImpersonation = () => {
-    fetchOrders()
-  }
 
 
   const renderWrapper = children => {

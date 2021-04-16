@@ -1,0 +1,181 @@
+.titleBreadcrumb {
+  font-size: 25px;
+  font-weight: bold;
+  font-style: normal;
+  color: #666666;
+  text-transform: uppercase;
+  margin: 39px 0px 40px 0px;
+}
+.titleBreadcrumb .phone {
+  font-size: 18px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 47px;
+  justify-content: center;
+}
+
+.breadcrumb .phone {
+  margin-bottom: 64px;
+}
+
+.line {
+  height: 3px;
+  background-color: #e8e8e8;
+  position: relative;
+  margin-top: 4px;
+  width: 397px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.line .desktop {
+  width: 350px;
+}
+
+.line .phone {
+  width: 320px;
+}
+
+.lineActive {
+  height: 3px;
+  background-color: #03a322;
+  position: relative;
+  margin-top: 4px;
+  width: 397px;
+  justify-content: space-between;
+  display: flex;
+}
+.lineActive .desktop {
+  width: 350px;
+}
+
+.lineActive .phone {
+  width: 320px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #e8e8e8;
+  border-radius: 20px;
+  margin: 4px 4px 0px 4px;
+}
+.dotActive {
+  width: 10px;
+  height: 10px;
+  background-color: #03a322;
+  border-radius: 20px;
+  margin-top: 4px;
+  margin: 4px 4px 0px 4px;
+}
+
+.label {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  right: 34px;
+  color: #a5a5a5;
+  font-size: 14px;
+  font-weight: 600;
+}
+.labelActive {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  right: 34px;
+  color: #03a322;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.labelMedium {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  right: 63px;
+  color: #a5a5a5;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.labelMediumActive {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  right: 63px;
+  color: #03a322;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.labelEnd {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  right: 34px;
+  color: #a5a5a5;
+  font-size: 14px;
+  font-weight: 600;
+  right: -68px;
+}
+
+.backorder {
+  display: flex;
+  color: #e1251b;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+.backorder a {
+  text-decoration: underline;
+  color: #e1251b;
+}
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.title span {
+  text-decoration: underline;
+}
+
+.iconFill {
+  fill: #e1251b;
+  margin-right: 3px;
+}
+.labelEndActive {
+  bottom: 8px;
+  position: relative;
+  top: 13px;
+  color: #e1251b;
+  font-size: 14px;
+  font-weight: 600;
+  right: -68px;
+}
+.labelEndActive .desktop {
+  right: -30px;
+}
+.labelEndActive .tablet {
+  right: -30px;
+  text-align: center;
+}
+
+.labelEndActive .phone {
+  right: -30px;
+  text-align: center;
+}
+@media (max-width: 480px) {
+  .lineActive {
+    width: 120px !important;
+  }
+  .line {
+    width: 120px !important;
+  }
+  .labelEnd .phone {
+    right: 8px;
+  }
+}

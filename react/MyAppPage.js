@@ -5,6 +5,10 @@ import configureStore from './store/configureStore'
 // Your component pages
 import MyOrdersElektra from './pages/MyOrdersElektra'
 import ViewOrder from './pages/ViewOrder'
+import SelectItemsToCancel from './pages/SelectItemsToCancel'
+import CancelOrders from './pages/CancelOrders'
+import AccountRoute from './components/AccountRoute'
+import AccountProvider from './actions/account';
 
 
 const store = configureStore()
@@ -14,6 +18,10 @@ const MyAppPage = () => (
     <Fragment>
       <Route exact path="/pedidos" component={MyOrdersElektra} allowSAC />
       <Route exact path="/pedidos/:orderId" component={ViewOrder} allowSAC />
+      <Route exact path="/pedidos/seleccionar-articulos/:orderId" component={SelectItemsToCancel} allowSAC/>
+      <AccountProvider>
+        <AccountRoute exact path="/pedidos/seleccionar-articulos/:orderId/cancelar-mi-pedido" component={CancelOrders} allowSAC/>
+      </AccountProvider>
       {/*<Route
         exact
         path="/pedidos/:orderId/edit"

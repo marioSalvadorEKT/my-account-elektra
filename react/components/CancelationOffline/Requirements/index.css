@@ -1,0 +1,30 @@
+.container {
+  min-height: auto;
+  border-radius: 5px;
+  border: 1px solid #e8e8e8;
+  background-color: #f7f7f7;
+  padding: 18px 40px 18px 40px;
+  margin-top: 40px;
+  box-sizing: border-box;
+  color: #666666;
+  font-size: 14px;
+}
+
+.container.phone {
+  padding: 9px 27px 9px 27px;
+}
+
+.container span {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.container ul {
+  list-style: disc;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.container ul li {
+  margin-bottom: 5px;
+}
