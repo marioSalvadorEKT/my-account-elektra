@@ -1,41 +1,41 @@
-.TextFieldRoot {
+.TextFieldRoot_area {
   width: 100%;
   position: relative;
   padding-top: 18px;
 }
 
-.TextFieldRoot.open label {
+.TextFieldRoot_area.open label {
   transform: scale(0.77) translate(0px, -13px);
   display: none;
 }
 
-.TextFieldRoot.focus label {
+.TextFieldRoot_area.focus label {
   color: #ff5c60;
   font-style: normal;
 }
 
-.TextFieldRoot.focus input {
+.TextFieldRoot_area.focus input {
   border-bottom: 2px solid #ff5c60;
 }
 
-.TextFieldRoot.focus input::-webkit-input-placeholder {
+.TextFieldRoot_area.focus input::-webkit-input-placeholder {
   color: rgba(0, 0, 0, 0.3);
 }
 
-.TextFieldRoot.error i {
+.TextFieldRoot_area.error i {
   display: block;
   color: #e1251b;
 }
 
-.TextFieldRoot.error label {
+.TextFieldRoot_area.error label {
   color: #e1251b;
 }
 
-.TextFieldRoot.error input {
+.TextFieldRoot_area.error input {
   border-bottom: 2px solid #e1251b;
 }
 
-.TextFieldRoot label {
+.TextFieldRoot_area label {
   position: absolute;
   width: 100%;
   top: 20px;
@@ -52,7 +52,7 @@
   will-change: transform;
 }
 
-.TextFieldRoot i {
+.TextFieldRoot_area i {
   color: rgba(0, 0, 0, 0.3);
   position: absolute;
   right: 4px;
@@ -61,7 +61,7 @@
   display: none;
 }
 
-.TextFieldRoot .textarea {
+.TextFieldRoot_area textarea {
   width: 100%;
   outline: none;
   border: 1px solid rgba(0, 0, 0, 0.1);

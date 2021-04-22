@@ -1,0 +1,90 @@
+.DropDownRoot {
+  margin-bottom: 8px;
+  position: relative;
+  padding-top: 6px;
+}
+
+.DropDownRoot.disabled select {
+  border-bottom-color: transparent;
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 5px;
+  cursor: default;
+}
+
+.DropDownRoot.disabled i {
+  display: none;
+}
+
+.DropDownRoot.focus label,
+.DropDownRoot.focus i {
+  color: rgba(26, 172, 0, 0.8);
+}
+
+.DropDownRoot.focus select {
+  border: 1px solid rgba(26, 172, 0, 0.8);
+}
+
+.DropDownRoot.focus select::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.DropDownRoot.error label {
+  color: red;
+}
+
+.DropDownRoot.error select {
+  border: 1px solid red;
+}
+
+.DropDownRoot label {
+  position: absolute;
+  top: 12px;
+  left: 6px;
+  font-size: 16px;
+  line-height: 22px;
+  transform-origin: left top 0px;
+  transition: 300ms ease-out all;
+  color: rgba(0, 0, 0, 0.3);
+  cursor: text;
+  transform: scale(0.77) translate(0px, -24px);
+  padding: 0 5px;
+  background-color: white;
+  z-index: 3;
+}
+
+.DropDownRoot select {
+  width: 100%;
+  outline: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  height: 34px;
+  font-style: italic;
+  color: #666666;
+  transition: 300ms ease-out all;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border-radius: 0;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  border-radius: 6px;
+  text-indent: 9px;
+}
+
+.DropDownRoot i {
+  color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  right: 4px;
+  top: 11px;
+}
+
+.DropDownRoot .errorDescription {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

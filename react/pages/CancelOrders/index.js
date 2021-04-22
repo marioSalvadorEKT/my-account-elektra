@@ -49,14 +49,10 @@ const CancelOrders = (propsData) => {
 
   const {items, orderId} = queryString.parse(props.location.search);
 
-  console.log(propsData)
-  console.log(orderId)
   const status = getStatus(orderId) || null;
-  console.log(status)
   const valueStatus = status.index;
   const [showNoCancel, setNoCancel] = useState(true);
 
-  console.log(order)
 
   const renderWrapper = children => {
     return (

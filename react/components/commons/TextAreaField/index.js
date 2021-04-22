@@ -7,7 +7,7 @@ const TextArea = (props) => {
   const { error, $$name, ...inputHTMLAttributes } = input;
   const open = !!input.value || !!focus;
   const classNameString =
-    styles.TextFieldRoot +
+    styles.TextFieldRoot_area +
     ' ' +
     (open ? styles.open : styles.close) +
     ' ' +

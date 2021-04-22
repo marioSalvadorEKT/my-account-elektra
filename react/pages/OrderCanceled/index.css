@@ -1,0 +1,156 @@
+#container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.containerCancelation {
+  width: 70%;
+  padding: 20px 40px;
+}
+
+.containerCancelation.tablet {
+  width: 100%;
+}
+
+.containerCancelation.phone {
+  width: 100%;
+}
+
+.Cancelation_caneled {
+  display: flex;
+  margin-top: 55px;
+}
+
+.Cancelation_caneled.tablet {
+  flex-direction: column;
+}
+
+.Cancelation_caneled.phone {
+  flex-direction: column;
+}
+
+.userData {
+  width: 40%;
+}
+
+.userData.tablet {
+  width: 100%;
+}
+
+.userData.phone {
+  width: 100%;
+}
+
+.imageCancelation {
+  width: 60%;
+}
+
+.imageCancelation.tablet {
+  width: 100%;
+}
+
+.imageCancelation.phone {
+  width: 100%;
+  position: relative;
+}
+
+.name_canceled {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 34px;
+  color: #666666;
+}
+
+.description_canceled {
+  font-size: 20px;
+  line-height: 24px;
+  color: #666666;
+  font-weight: normal;
+}
+
+.description_canceled span {
+  color: #e1251b;
+}
+
+.cancelId {
+  font-size: 48px;
+  font-weight: bold;
+  color: #e1251b;
+  margin: 10px 0px 10px 0px;
+}
+
+.cancelId.phone {
+  font-size: 36px;
+}
+
+.line_icon {
+  position: absolute;
+}
+
+.line.desktop {
+  width: 40%;
+}
+
+.line.tablet {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+}
+
+.line.phone {
+  width: 70%;
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+}
+
+.plane {
+  top: 140px;
+  left: -10px;
+}
+
+.plane.desktop {
+  top: 124px;
+}
+
+.plane.tablet {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  top: 133px;
+  left: 450px;
+}
+
+.plane.phone {
+  -webkit-transform: scaleX(-1);
+  -moz-transform: scaleX(-1);
+  top: 104px;
+  left: 203px;
+}
+
+@media (max-width: 389px) {
+  .lineInitial {
+    width: 220px;
+  }
+
+  .label.phone {
+    left: 164px;
+  }
+
+  .labelInitial.phone {
+    right: 164px;
+  }
+}
+
+@media (max-width: 320px) {
+  .lineInitial {
+    width: 200px;
+  }
+
+  .label.phone {
+    left: 138px;
+  }
+
+  .labelInitial.phone {
+    right: 146px;
+  }
+}

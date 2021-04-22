@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-/* import styles from './index.module.sass';
- */
+import styles from './index.css';
+
 class DropDown extends PureComponent {
   constructor(props) {
     super(props);
@@ -34,19 +34,19 @@ class DropDown extends PureComponent {
 
     return (
       <div
-        /* className={`
+        className={`
           ${styles.DropDownRoot}
           ${(open && styles.open) || styles.close}
           ${(focus && styles.focus) || ''}
           ${(!!props.input.error && styles.error) || ''}
           ${(propsInput.disabled && styles.disabled) || ''}
-        `} */>
+        `}>
         <label htmlFor={propsInput.id || ''}>{props.label || ''}</label>
         <select {...attributes}>{props.children}</select>
         {(focus && <i className="material-icons">done</i>) || (
           <i className="material-icons"></i>
         )}
-        {!!props.input.error && <div /* className={styles.errorDescription} */>{props.input.error}</div>}
+        {!!props.input.error && <div className={styles.errorDescription}>{props.input.error}</div>}
       </div>
     );
   }

@@ -374,6 +374,7 @@ export default (dispatch, state) => ({
   },
   getCauses: (id) => {
     fetchSelfService(id).then((selfService) => {
+      console.log(selfService)
       return dispatch({ type: 'CAUSES', payload: selfService });
     });
   }

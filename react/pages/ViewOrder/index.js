@@ -4,33 +4,20 @@ import PropTypes from 'prop-types'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import ReactRouterPropTypes from 'react-router-prop-types'
 import packagify from '@vtex/delivery-packages'
-import {
-  ContentWrapper,
-  utils,
-  ProgressBarBundle,
-} from 'vtex.my-account-commons'
+import { ContentWrapper } from 'vtex.my-account-commons'
 
 import { OrderUtils } from '../../utils'
 import Address from '../../components/commons/Address'
-import Price from '../../components/commons/FormattedPrice'
 import FormattedDate from '../../components/commons/FormattedDate'
-import PaymentFlagIcon from '../../components/commons/PaymentFlagIcon'
-import PaymentConnectorResponses from '../../components/commons/PaymentConnectorResponses'
 import StatusBadge from '../../components/commons/StatusBadge'
 import TrackingDataSpoiler from '../../components/commons/TrackingDataSpoiler'
-import OrderButtons from '../../components/ViewOrder/OrderButtons'
-import ReplacementHistory from '../../components/ViewOrder/ReplacementHistory'
-import ChangesHistory from '../../components/ViewOrder/ChangesHistory'
-import getDeliveryName from '../../utils/getDeliveryName'
 import {
   fetchOrder,
   fetchParentOrders,
   fetchOrders,
 } from '../../actions/order-actions'
-import Totals from '../../components/Order/Totals'
 import Error from '../../components/commons/Error'
 import Spinner from '../../components/commons/Spinner'
-import Products from '../../components/Order/Products/index'
 import TrackingProgress from '../../components/commons/TrackingProgress'
 import InvoiceDataSpoiler from '../../components/commons/InvoiceDataSpoiler'
 
@@ -42,16 +29,6 @@ import TrackingSteaper from '../../components/Order/TrackingSteaper'
 import ItemDetail from '../../components/ItemDetail'
 import { Link } from 'vtex.my-account-commons/Router'
 
-
-const { estimateShipping } = utils
-const {
-  ProgressBarSection,
-  PackageProgressBarSection,
-  OrderStatus,
-  PackageStatus,
-  utils: { generatePackageProgressBarStates, generateProgressBarStates },
-  constants: { progressBarStates, packageProgressBarStates },
-} = ProgressBarBundle
 
 export const headerConfig = ({ order, intl }) => {
   const orderTitle = intl.formatMessage({ id: 'orders.title' })
@@ -231,11 +208,6 @@ const ViewOrder = (props) => {
               <Address address={address} />
             </section>
           </article>
-          {/* <Totals
-            totals={totals}
-            currencyCode={currencyCode}
-            transactions={paymentData.transactions}
-          /> */}
           <article className="w-100 w-third-m">
             <section className="pa5 b--muted-5 overflow-y-scroll h4-plus flex flex-column items-start">
               <h3 className="c-muted-2 mv4 f6">
@@ -475,7 +447,6 @@ const ViewOrder = (props) => {
         });
         //packageAttachment logica
 
-        console.log(order)
         return (
           <div
             className="w-100 fl"

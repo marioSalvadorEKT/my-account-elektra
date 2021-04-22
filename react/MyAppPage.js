@@ -7,6 +7,7 @@ import MyOrdersElektra from './pages/MyOrdersElektra'
 import ViewOrder from './pages/ViewOrder'
 import SelectItemsToCancel from './pages/SelectItemsToCancel'
 import CancelOrders from './pages/CancelOrders'
+import OrderCanceled from './pages/OrderCanceled/'
 import AccountRoute from './components/AccountRoute'
 import AccountProvider from './actions/account';
 
@@ -21,6 +22,7 @@ const MyAppPage = () => (
       <Route exact path="/pedidos/seleccionar-articulos/:orderId" component={SelectItemsToCancel} allowSAC/>
       <AccountProvider>
         <AccountRoute exact path="/pedidos/seleccionar-articulos/:orderId/cancelar-mi-pedido" component={CancelOrders} allowSAC/>
+        <AccountRoute exact path="/pedido-cancelado/:orderId/:folioId" component={OrderCanceled} />
       </AccountProvider>
       {/*<Route
         exact

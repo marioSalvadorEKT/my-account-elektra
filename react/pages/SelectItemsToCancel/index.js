@@ -190,7 +190,7 @@ const CancelOrder = (props) => {
         <Breadcrumb type="selectProducts" />
         <ListProductsCanceled order={order} />
 
-        <section className="w-100 w-70-xl fl-xl pr9">
+        {/* <section className="w-100 w-70-xl fl-xl pr9">
           <p className="f4 c-on-base lh-copy mt7">
             <FormattedMessage id="pages.cancelOrder.greeting" />
           </p>
@@ -236,7 +236,7 @@ const CancelOrder = (props) => {
                 ))}
               </OptionGroup>
             ))}
-        </section>
+        </section> */}
       </div>
     )
 }

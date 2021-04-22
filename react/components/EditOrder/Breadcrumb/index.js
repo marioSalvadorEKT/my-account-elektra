@@ -25,8 +25,8 @@ const Breadcrumb = ({type}) => {
             className={`${((statusCanceled === 'startCancelation' ||
               statusCanceled === 'selectProducts' ||
               statusCanceled === 'canceled') &&
-              styles.labelActive) ||
-              styles.label} ${styles[breakpoint]}`}>
+              styles.labelActive_bread) ||
+              styles.label_bread} ${styles[breakpoint]}`}>
             Selecciona
           </div>
         </div>
@@ -45,8 +45,8 @@ const Breadcrumb = ({type}) => {
           <div
             className={`${((statusCanceled === 'startCancelation' ||
               statusCanceled === 'canceled') &&
-              styles.labelActive) ||
-              styles.label} ${styles[breakpoint]}`}>
+              styles.labelActive_bread) ||
+              styles.label_bread} ${styles[breakpoint]}`}>
             Motivo de cancelación
           </div>
           <div

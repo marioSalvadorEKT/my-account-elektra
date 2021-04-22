@@ -23,19 +23,22 @@ const CancelationOffline = ({state, actions, props}) => {
   const [isFetched, setisFeched] = useState(false);
   const url = queryString.parse(props.location.search);
   const urlParams = queryString.parse(props.location.search, { parseBooleans: true });
-  const orderId = url.order;
+  const orderId = url.orderId;
   const search = props.location.search;
   const isTotalCancelation = urlParams.isTotalCancelation;
 
+  /* console.log(state)
+  console.log(actions)
+  console.log(props) */
   useEffect(() => {
     actions.getCauses(orderId);
   }, []);
 
-  const { causes } = state.selfService || [];
+  
 
+  const { causes } = state.selfService || [];
   const aplyMtcn = urlParams.mtcn;
   const items = (!Array.isArray(urlParams.items) && [urlParams.items]) || urlParams.items;
-
   const cause = useField({
     id: 'cause',
     name: 'cause',
@@ -102,11 +105,12 @@ const CancelationOffline = ({state, actions, props}) => {
             response.data.selfService.cancelation.id
           )
             props.history.push(
-              `/order-canceled/${orderId}/${response.data.selfService.cancelation.id}`
+              `/pedido-cancelado/${orderId}/${response.data.selfService.cancelation.id}`
             );
         });
     }
   };
+
   return (
     <div>
       <Breadcrumb type="startCancelation" order={url.order} />
@@ -155,7 +159,9 @@ const CancelationOffline = ({state, actions, props}) => {
             styles.agreeButton) ||
             styles.agreeButtonDisable} `}
           onClick={() => {
+            console.log(comments)
             const validatedFields = validateData([comments, cause, mtcnName, mtcnBirthday]);
+            console.log(validatedFields)
             if (!validatedFields.errors || !validatedFields.errors.length) {
               setShowPopup(true);
             }

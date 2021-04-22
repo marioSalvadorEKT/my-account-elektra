@@ -31,9 +31,9 @@
   justify-content: space-between;
 }
 
-.line .desktop {
+/* .line .desktop {
   width: 350px;
-}
+} */
 
 .line .phone {
   width: 320px;
@@ -72,7 +72,7 @@
   margin: 4px 4px 0px 4px;
 }
 
-.label {
+.label_bread {
   bottom: 8px;
   position: relative;
   top: 13px;
@@ -81,7 +81,7 @@
   font-size: 14px;
   font-weight: 600;
 }
-.labelActive {
+.labelActive_bread {
   bottom: 8px;
   position: relative;
   top: 13px;
