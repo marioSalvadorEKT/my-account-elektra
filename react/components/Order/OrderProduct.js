@@ -6,6 +6,8 @@ import ProductImage from '../commons/ProductImage'
 import Estimate from './Estimate'
 import ProductQuantity from '../commons/ProductQuantity'
 import Price from '../commons/FormattedPrice'
+import  formatted from '../../utils/currency';
+import  amount from '../../utils/amount';
 
 const OrderProduct = (props) => {
   const {
@@ -23,6 +25,9 @@ const OrderProduct = (props) => {
     },
     currency
   } = props
+
+  const hasFloatUnitMultiplier = !!(unitMultiplier % 1)
+  const unitValue = hasFloatUnitMultiplier ? sellingPrice / unitMultiplier : sellingPrice
 
   return (
     <div className="myo-order-product w-100 pb2 pt2 overflow-y-hidden">
@@ -59,15 +64,11 @@ const OrderProduct = (props) => {
       <div className="dib w-20 pl3 c-on-base f6 fw4 lh-copy">
         <div className="dib">
           <div className="strike" >
-            <Price value={listPrice} currency={currency}/>
+            <span>{`$ ${formatted(amount(listPrice))}`}</span>
           </div>
           <br/>
-          <UnitPrice
-            value={sellingPrice}
-            currency={currency}
-            measurementUnit={measurementUnit}
-            unitMultiplier={unitMultiplier}
-          />
+          <span>{`$ ${formatted(amount(unitValue))}`}</span>
+          {hasFloatUnitMultiplier && ` / ${measurementUnit}`}
         </div>
       </div>
     </div>

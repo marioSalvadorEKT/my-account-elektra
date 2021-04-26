@@ -12,6 +12,8 @@ import { FormattedMessage } from 'react-intl'
 import Tag from '../../images/icons/tag.svg';
 import Calendar from '../../images/icons/calendar.svg';
 import Cash from '../../images/icons/cash.svg';
+import  currency from '../../utils/currency';
+import  amount from '../../utils/amount';
 
 
 const Order = ({ order, alwaysActive, allowSAC }) => {
@@ -69,11 +71,12 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
               <FormattedMessage id="order.total" />
             </div>
             <div className="f6 c-muted-3 fw6">
-              <FinalPrice
+              {/* <FinalPrice
                 totals={totals}
                 currencyCode={currencyCode}
                 transactions={paymentData.transactions}
-              />
+              /> */}
+              <span>{`$ ${currency(amount(totals.reduce((price, total) => price + total.value, 0)))}`}</span>
             </div>
             
           </div>

@@ -13,7 +13,6 @@ const DetailedOrder = (props) => {
   const { orderData, allowSAC, alwaysActive, orderId } = props
 
   if (!orderData) {
-    console.log("No hay OrdeData")
     return (
       <CollapsedOrder
         orderId={props.orderId}
@@ -22,7 +21,6 @@ const DetailedOrder = (props) => {
     )
   }
   const order = OrderUtils.mapOrder(orderData)
-  /* console.log("orderData",orderData) */
   return (
     <article
       className={`myo-order-card myo-order-status-${kebabCase(

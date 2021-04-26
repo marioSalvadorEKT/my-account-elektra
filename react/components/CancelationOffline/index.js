@@ -27,9 +27,6 @@ const CancelationOffline = ({state, actions, props}) => {
   const search = props.location.search;
   const isTotalCancelation = urlParams.isTotalCancelation;
 
-  /* console.log(state)
-  console.log(actions)
-  console.log(props) */
   useEffect(() => {
     actions.getCauses(orderId);
   }, []);
@@ -159,9 +156,7 @@ const CancelationOffline = ({state, actions, props}) => {
             styles.agreeButton) ||
             styles.agreeButtonDisable} `}
           onClick={() => {
-            console.log(comments)
             const validatedFields = validateData([comments, cause, mtcnName, mtcnBirthday]);
-            console.log(validatedFields)
             if (!validatedFields.errors || !validatedFields.errors.length) {
               setShowPopup(true);
             }

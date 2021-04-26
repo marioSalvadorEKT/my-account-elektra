@@ -5,6 +5,9 @@ import Spinner from "../../../components/commons/Spinner"
 
 import styles from './index.css';
 
+import currency from '../../../utils/currency'
+import amount from '../../../utils/amount'
+
 const ListProductsCanceled = (props) => {
   let totalCanceled = 0;
   const breakpoint = "desktop";
@@ -85,7 +88,7 @@ const ListProductsCanceled = (props) => {
                         <div className={`${styles.subtotal} `}>
                           Subtotal:
                           <span className={styles.selling}>
-                            ${((sellingPrice / 100) * quantity)}
+                          {`$ ${currency(amount(sellingPrice * quantity))}`}
                           </span>
                         </div>
                         <div className={` ${styles.checkBox}`}>
@@ -109,7 +112,7 @@ const ListProductsCanceled = (props) => {
         </div>
         {isMobile && (
           <div className={`${styles.priceSelectproducts} `}>
-            Total a rembolsar: <span> $ {handleSelecPrice()}</span>
+            Total a rembolsar: <span>{`$ ${currency(handleSelecPrice())}`}</span>
           </div>
         )}
         <div className={styles.wrapperButtons}>
@@ -120,7 +123,7 @@ const ListProductsCanceled = (props) => {
           </Link>
           {!isMobile && (
             <div className={styles.priceSelectproducts}>
-              Total a rembolsar: <span> $ {handleSelecPrice()}</span>
+              Total a rembolsar: <span>{`$ ${currency(handleSelecPrice())}`}</span>
             </div>
           )}
           <Link

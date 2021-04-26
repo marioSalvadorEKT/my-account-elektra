@@ -28,6 +28,7 @@ import flatten from 'lodash/flatten'
 import TrackingSteaper from '../../components/Order/TrackingSteaper'
 import ItemDetail from '../../components/ItemDetail'
 import { Link } from 'vtex.my-account-commons/Router'
+import currency from '../../utils/currency'
 
 const ShippingIcon = 
     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -162,7 +163,7 @@ const ViewOrder = (props) => {
   const itemsCanceled = items.filter((item) => item.isCanceled);
 
   const CancelOrderButton = allowCancellation ? (
-    <Link className="no-underline flex bg-muted-4 pv5 ph6 dark-gray" to={`/pedidos/seleccionar-articulos/${order.orderId}`}>
+    <Link className="no-underline flex bg-muted-3 pv5 ph6 dark-gray" to={`/pedidos/seleccionar-articulos/${order.orderId}`}>
         <FormattedMessage id="order.cancelOrder"  />
     </Link>
   ) : null
@@ -669,6 +670,9 @@ const ViewOrder = (props) => {
           </div>
         )
       })}
+        <div className="flex justify-end w-100 pv6 items-center">
+          Total: <span>{` $${currency(order.value / 100)}`}</span>
+        </div>
     </div>
   )
 }

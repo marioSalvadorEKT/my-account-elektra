@@ -26,7 +26,6 @@ const OrdersList = (props) => {
         loader={<Spinner/>}
       >
         {orders.map(orderId => {
-          console.log("orderId", orderId)
           return (
             <DetailedOrder
               key={orderId}

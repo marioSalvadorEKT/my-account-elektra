@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Price from '../../components/commons/ProductPrice'
+import  currency from '../../utils/currency';
+import  amount from '../../utils/amount';
 
 
 const ItemDetail = (props, currencyCode) => {
@@ -22,7 +24,6 @@ const ItemDetail = (props, currencyCode) => {
       deliveryStart
     } = props
   
-  console.log(props)
   return (
     <div className="flex ">
       <div className="flex pa4 w-100 bt  bw1 b--muted-4 items-center ph7">
@@ -51,7 +52,7 @@ const ItemDetail = (props, currencyCode) => {
                 </Link>
               )) || (
                 <span className="">
-                  <Price value={sellingPrice} currency={currencyCode} />
+                  <span>{`$ ${currency(amount(sellingPrice))}`}</span>
                 </span>
               )}
             </div>
