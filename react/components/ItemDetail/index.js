@@ -3,22 +3,26 @@ import { Link } from 'react-router-dom';
 import Price from '../../components/commons/ProductPrice'
 
 
-const ItemDetail = ({
-  name,
-  imageUrl,
-  quantity,
-  detailUrl,
-  breakpoint,
-  orderStatus,
-  price,
-  folio,
-  isCanceled,
-  isTotalCancelation,
-  sellingPrice,
-  orderId,
-  deliveryEnd,
-  deliveryStart
-}, currencyCode) => {
+const ItemDetail = (props, currencyCode) => {
+  const 
+    {
+      name,
+      imageUrl,
+      quantity,
+      detailUrl,
+      breakpoint,
+      orderStatus,
+      price,
+      folio,
+      isCanceled,
+      isTotalCancelation,
+      sellingPrice,
+      orderId,
+      deliveryEnd,
+      deliveryStart
+    } = props
+  
+  console.log(props)
   return (
     <div className="flex ">
       <div className="flex pa4 w-100 bt  bw1 b--muted-4 items-center ph7">

@@ -18,8 +18,8 @@ const MyAppPage = () => (
   <Provider store={store}>
     <Fragment>
       <Route exact path="/pedidos" component={MyOrdersElektra} allowSAC />
-      <Route exact path="/pedidos/:orderId" component={ViewOrder} allowSAC />
       <Route exact path="/pedidos/seleccionar-articulos/:orderId" component={SelectItemsToCancel} allowSAC/>
+      <Route exact path="/pedidos/:orderId" component={ViewOrder} allowSAC />
       <AccountProvider>
         <AccountRoute exact path="/pedidos/seleccionar-articulos/:orderId/cancelar-mi-pedido" component={CancelOrders} allowSAC/>
         <AccountRoute exact path="/pedido-cancelado/:orderId/:folioId" component={OrderCanceled} />

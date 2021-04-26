@@ -36,6 +36,7 @@
   "order.moreOptions": "More options",
   "orders.title": "My Orders",
   "orders.title2": "My Orders",
+  "orders.titleNull": "",
   "order.status": "Order status",
   "myOrders.title": "My Orders",
   "orders.edit": "Edit Order #{orderNumber}",

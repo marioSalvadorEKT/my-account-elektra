@@ -28,7 +28,7 @@ const ConfirmCancellation = ({ onClose, onConfirmation, isFetched, order }) => {
 
         {(isFetched && <Spinner />) || (
           <div className={`${styles.footerPop}`}>
-            <Link to={`./order-detail?order=${order}`}>
+            <Link to={`/pedidos/${order}`}>
               <div
                 className={`${styles.cancelPopButton} ${styles.active}`}
                 onClick={onClose}>

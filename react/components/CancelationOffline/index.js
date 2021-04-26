@@ -149,7 +149,7 @@ const CancelationOffline = ({state, actions, props}) => {
         className={`${(isTotalCancelation && styles.wrapperButtonsCancelation) ||
           styles.wrapperButtons}`}>
         {!isTotalCancelation && (
-          <Link to={`/seleccionar-articulos${search}`}>
+          <Link to={`/pedidos/seleccionar-articulos/${orderId}`}>
             <div className={`${styles.disagreeButton}`}>Atrás</div>
           </Link>
         )}

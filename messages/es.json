@@ -37,6 +37,7 @@
     "order.moreOptions": "Más Opciones",
     "orders.title": "Mis Pedidos",
     "orders.title2": "Mis Pedidos",
+    "orders.titleNull": "",
     "order.status": "Estatus del pedido",
     "myOrders.title": "Mis Pedidos",
     "orders.edit": "Editar Pedido #{orderNumber}",

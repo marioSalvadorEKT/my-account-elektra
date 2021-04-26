@@ -25,14 +25,17 @@ const OrdersList = (props) => {
         hasMore={hasMore}
         loader={<Spinner/>}
       >
-        {orders.map(orderId => (
-          <DetailedOrder
-            key={orderId}
-            orderId={orderId}
-            alwaysActive={alwaysActive}
-            allowSAC={allowSAC}
-          />
-        ))}
+        {orders.map(orderId => {
+          console.log("orderId", orderId)
+          return (
+            <DetailedOrder
+              key={orderId}
+              orderId={orderId}
+              alwaysActive={alwaysActive}
+              allowSAC={allowSAC}
+            />
+          )
+        })}
       </InfiniteScroll>
   )
 }
