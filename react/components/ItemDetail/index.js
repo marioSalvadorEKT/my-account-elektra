@@ -27,11 +27,11 @@ const ItemDetail = (props, currencyCode) => {
   return (
     <div className="flex ">
       <div className="flex pa4 w-100 bt  bw1 b--muted-4 items-center ph7">
-        <div className="tc">
+        <div className="tc f6">
           <img src={imageUrl} alt={name} />
         </div>
         <div className="flex items-center w-100 ml6">
-          <div className="w-50 b">
+          <div className="w-50 b f6">
             <a href={detailUrl} className="no-underline c-muted-1">{name}</a>
             <br />
             {!!deliveryStart && !!deliveryEnd && orderStatus.index !== 5 && (
@@ -42,7 +42,7 @@ const ItemDetail = (props, currencyCode) => {
             )}
           </div>
           <div className="w-50 flex justify-end">
-            <span className="tc w-20">
+            <span className="tc w-20 f6 c-muted-1 b">
               {quantity} pza{quantity > 1 ? 's' : ''}
             </span>
             <div className="w-40 tr">
@@ -51,7 +51,7 @@ const ItemDetail = (props, currencyCode) => {
                   <span>{folio}</span>
                 </Link>
               )) || (
-                <span className="">
+                <span className="f6 c-muted-1 b">
                   <span>{`$ ${currency(amount(sellingPrice))}`}</span>
                 </span>
               )}

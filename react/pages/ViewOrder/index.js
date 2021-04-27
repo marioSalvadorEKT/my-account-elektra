@@ -29,24 +29,11 @@ import TrackingSteaper from '../../components/Order/TrackingSteaper'
 import ItemDetail from '../../components/ItemDetail'
 import { Link } from 'vtex.my-account-commons/Router'
 import currency from '../../utils/currency'
+import styles from './index.css'
 
-const ShippingIcon = 
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-      <title>my-shippings</title>
-      <path d="M16 5c0.038-0.005 0.081-0.008 0.125-0.008s0.087 0.003 0.13 0.009l-0.005-0.001 9.56 3.83c0.266 0.11 0.45 0.367 0.45 0.667 0 0.001 0 0.002 0 0.003v-0 12.96c-0.003 0.297-0.186 0.551-0.445 0.658l-0.005 0.002-9.54 3.88c-0.080 0.033-0.173 0.053-0.27 0.053s-0.19-0.019-0.275-0.054l0.005 0.002-9.56-3.88c-0.264-0.109-0.447-0.363-0.45-0.66v-12.92c0-0.001 0-0.002 0-0.003 0-0.3 0.184-0.558 0.445-0.666l0.005-0.002 9.56-3.87c0.041-0.006 0.087-0.009 0.135-0.009s0.094 0.003 0.14 0.010l-0.005-0.001zM16 6.49l-7.62 3 2.69 1.080 7.2-3.22zM20.38 8.24l-7.38 3.13 3 1.22 7.62-3.050zM24.85 10.6l-8.13 3.26v11.36l8.13-3.22zM7.15 10.6v11.4l8.13 3.26v-11.4l-3.11-1.25v3.39l-1.91-0.72v-3.43z"></path>
-    </svg>
-
-const ArrowLeftIcon = 
-  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-    <title>arrow-left-slim</title>
-    <path d="M18.94 24c-0 0-0.001 0-0.001 0-0.354 0-0.67-0.163-0.877-0.418l-0.002-0.002-6-7.34c-0.082-0.098-0.132-0.226-0.132-0.365s0.050-0.267 0.133-0.366l-0.001 0.001 6-7.11c0.211-0.247 0.522-0.402 0.87-0.402 0.631 0 1.142 0.511 1.142 1.142 0 0.283-0.103 0.542-0.273 0.742l0.001-0.002-4.8 5.65c-0.085 0.099-0.136 0.228-0.136 0.37s0.052 0.271 0.137 0.371l-0.001-0.001 4.81 5.86c0.162 0.195 0.261 0.449 0.261 0.726 0 0.356-0.163 0.674-0.419 0.883l-0.002 0.002c-0.192 0.162-0.441 0.26-0.714 0.26-0.006 0-0.011-0-0.017-0h0.001z"></path>
-  </svg>
-
-
+import getIcon from './Icons/index'
 
 export const headerConfig = ({ order, intl }) => {
-  const orderTitle = intl.formatMessage({ id: 'orders.title' })
-  const orderNumber = order && order.orderId ? `#${order.orderId}` : ''
   const backButton = {
     title: "Mis pedidos",
     path: order && order.orderId ? `/pedidos/${order.orderId}` : '/pedidos',
@@ -55,8 +42,8 @@ export const headerConfig = ({ order, intl }) => {
 
   const customButton = (
     <Link to={'/pedidos'}>
-      {ArrowLeftIcon}
-      {ShippingIcon}
+      {getIcon("arrowLeft")}
+      {getIcon("shipping")}
       <span>Regresar a mis pedidos</span>
     </Link>
   )
@@ -163,10 +150,12 @@ const ViewOrder = (props) => {
   const itemsCanceled = items.filter((item) => item.isCanceled);
 
   const CancelOrderButton = allowCancellation ? (
-    <Link className="no-underline flex bg-muted-3 pv5 ph6 dark-gray" to={`/pedidos/seleccionar-articulos/${order.orderId}`}>
+    <Link className="no-underline flex bg-muted-3 pv5 ph6 dark-gray" to={`/pedidos/seleccionar-articulos/${order.orderId}`} className={styles.cancelButtonView}>
         <FormattedMessage id="order.cancelOrder"  />
     </Link>
   ) : null
+
+  const shipping = totals.find(({id})=> id === "Shipping")
 
   return renderWrapper(
     <div className="center w-100">
@@ -186,54 +175,66 @@ const ViewOrder = (props) => {
           <div className="fw6 pb3">
             <StatusBadge order={order} />
           </div>
-          <>
-            <span className="fw4 c-muted-2 pb3">
+          <div className="flex items-center">
+            {getIcon('calendar')} 
+            <span className="fw4 c-muted-2">
               <FormattedMessage id="order.dateIs"/> {' '}
+              &nbsp;
             </span>
-            <span className="fw6 c-muted-3 pb3">
+            <span className="fw6 c-muted-3">
               <FormattedDate date={creationDate} style="long" />
             </span>
-          </>
+          </div>
         </div>
 
-        <div className="w-30 w-40-ns pv3-ns pr0 f6 items-end justify-end flex">
-          <span className="fw4 c-muted-2 pb3">
+        <div className="w-30 w-40-ns pv3-ns pr0 f6 items-center justify-end flex">
+          {getIcon('tag')} 
+          <span className="fw4 c-muted-2">
             <FormattedMessage id="order.sellerName" />{' '}
           </span>
-          <span className="fw6 c-muted-3 pb3">&nbsp;{sellers[0].name} </span>
+          <span className="fw6 c-muted-3">&nbsp;{sellers[0].name} </span>
         </div>
       </div>
       
       <div className="center w-100 ba flex flex-column bw1 b--muted-4">
 
-        <TrackingSteaper status={status} packageAttachment={order.packageAttachment} />
-
         <section className="w-100 fl mt5 mb2-l mb2-xl flex">
         <article className="w-100 w-third-m">
-            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex flex-column items-start">
-              <h3 className="c-muted-2 mv4 f6">
-                <FormattedMessage id="order.deliveryType" />
-              </h3>
-              <div className="mt2">
-                {logisticsShipping[0].selectedSla}
+            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex items-start">
+            {getIcon('shippingType')}
+              <div>
+                <h3 className="c-muted-2 mv5 f6">
+                  <FormattedMessage id="order.deliveryType" />
+                </h3>
+                <div className="c-muted-1 f6">
+                  {logisticsShipping[0].selectedSla}
+                </div>
               </div>
             </section>
           </article>
           <article className="w-100 w-third-m">
-            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex flex-column items-start">
-              <h3 className="c-muted-2 mv4 f6">
-                <FormattedMessage id="order.shippingInfo" />
-              </h3>
-              <Address address={address} />
+            <section className="pa5 b--muted-5 h4-plus overflow-y-scroll flex items-start">
+              {getIcon('addressPin')}
+              <div>
+                <h3 className="c-muted-2 mv5 f6">
+                  <FormattedMessage id="order.shippingInfo" />
+                </h3>
+                <div className="f6 c-muted">
+                  <Address address={address} />
+                </div>
+              </div>
             </section>
           </article>
           <article className="w-100 w-third-m">
-            <section className="pa5 b--muted-5 overflow-y-scroll h4-plus flex flex-column items-start">
-              <h3 className="c-muted-2 mv4 f6">
-                <FormattedMessage id="order.paymentInfo" />
-              </h3>
+            <section className="pa5 b--muted-5 overflow-y-scroll h4-plus flex items-start">
+              {getIcon('cashFull')}
               <div>
-                <span className="mt2">{transactions[0].payments[0].paymentSystemName}</span>
+                <h3 className="c-muted-2 mv5 f6">
+                  <FormattedMessage id="order.paymentInfo" />
+                </h3>
+                <div>
+                  <span className="c-muted-1 f6">{transactions[0].payments[0].paymentSystemName}</span>
+                </div>
               </div>
               {/* Mario Servicios */}
               {/* {!order.hitch && (
@@ -318,6 +319,7 @@ const ViewOrder = (props) => {
             </section>
           </article>
         </section>
+        <TrackingSteaper status={status} packageAttachment={order.packageAttachment} />
       </div>
       <div className="flex justify-end items-center pv7">
         {CancelOrderButton}
@@ -633,7 +635,7 @@ const ViewOrder = (props) => {
             }
             
             {!!itemsCanceled.length && (
-              <div className={``}>
+              <div className={styles.cancelButtonView}>
                 Solicitud de cancelación
               </div>
             )}
@@ -670,8 +672,18 @@ const ViewOrder = (props) => {
           </div>
         )
       })}
-        <div className="flex justify-end w-100 pv6 items-center">
-          Total: <span>{` $${currency(order.value / 100)}`}</span>
+        <div className="flex justify-end w-100 pv6 items-end flex-column f5 c-muted-1">
+          
+          {
+            shipping && shipping.value !== 0 && (
+              <div className="f5 mv2">
+                Costo de envio: <span className="ml4">{` $${currency(shipping.value / 100)}`}</span>
+              </div>
+            )
+          }
+          <div className="b mv2">
+            Total: <span className="ml4">{` $${currency(order.value / 100)}`}</span>
+          </div>
         </div>
     </div>
   )

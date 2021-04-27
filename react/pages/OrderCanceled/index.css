@@ -6,7 +6,7 @@
 }
 
 .containerCancelation {
-  width: 70%;
+  width: 100%;
   padding: 20px 40px;
 }
 
@@ -18,16 +18,16 @@
   width: 100%;
 }
 
-.Cancelation_caneled {
+.Cancelation {
   display: flex;
   margin-top: 55px;
 }
 
-.Cancelation_caneled.tablet {
+.Cancelation.tablet {
   flex-direction: column;
 }
 
-.Cancelation_caneled.phone {
+.Cancelation.phone {
   flex-direction: column;
 }
 
@@ -56,21 +56,21 @@
   position: relative;
 }
 
-.name_canceled {
+.name {
   font-size: 30px;
   font-weight: bold;
   line-height: 34px;
   color: #666666;
 }
 
-.description_canceled {
+.description {
   font-size: 20px;
   line-height: 24px;
   color: #666666;
   font-weight: normal;
 }
 
-.description_canceled span {
+.description span {
   color: #e1251b;
 }
 
@@ -85,7 +85,7 @@
   font-size: 36px;
 }
 
-.line_icon {
+.line {
   position: absolute;
 }
 

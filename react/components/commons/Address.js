@@ -5,7 +5,7 @@ import AddressRules from '@vtex/address-form/lib/AddressRules'
 
 const Address = ({ address }) => {
   return (
-    <div className="lh-copy f6">
+    <div className="lh-copy f7 c-muted-1">
       <strong>{address.receiverName}</strong>
       <br />
       <AddressRules country={address.country} shouldUseIOFetching>

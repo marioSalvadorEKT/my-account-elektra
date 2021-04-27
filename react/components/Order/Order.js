@@ -14,6 +14,7 @@ import Calendar from '../../images/icons/calendar.svg';
 import Cash from '../../images/icons/cash.svg';
 import  currency from '../../utils/currency';
 import  amount from '../../utils/amount';
+import getIcon from './TrackingSteaper/icons/OrderIcons'
 
 
 const Order = ({ order, alwaysActive, allowSAC }) => {
@@ -44,19 +45,21 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
       ? items.slice(0, MAX_PRODUCTS_SHOWN)
       : marketplaceItems.slice(0, MAX_PRODUCTS_SHOWN)
 
+  const shipping = totals.find(({id})=> id === "Shipping")
+
   return (
     <div className="cf w-100 pa5 ph7-ns bb b--muted-5 bg-base lh-copy flex items-center">
       <div className="w-20">
           <div className="mv3">
             <div className="f7 c-muted-2 flex items-center">
-              <img src={Tag} height={23} width={23} alt="Tag" className="mr2"/>
+              {getIcon("tag")}
               <FormattedMessage id="order.sellingBy" />
             </div>
             <div className="f6 c-muted-3 fw6">{sellers[0].name}</div>
           </div>
           <div className="mv3">
             <div className="f7 c-muted-2 flex items-center">
-              <img src={Calendar} height={15} width={15} alt="Calendar" className="mr2"/>
+              {getIcon("calendar")}
               <div>
                 <FormattedMessage id="order.dateIs" />
               </div>
@@ -65,9 +68,19 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
               <FormattedDate date={creationDate} />
             </div>
           </div>
+          <div className="mv3 f7 c-muted-2  items-center">
+            {
+              shipping && shipping.value !== 0 && (
+                <>
+                  <div>Costo de envío</div>
+                  <span>{`$ ${currency(amount(shipping.value))}`}</span>
+                </>
+              )
+            }
+          </div>
           <div className="mv3">
             <div className="f7 c-muted-2 flex items-center">
-              <img src={Cash} height={22} width={22} alt="Cash" className="mr2"/>
+              {getIcon("cash")}
               <FormattedMessage id="order.total" />
             </div>
             <div className="f6 c-muted-3 fw6">
