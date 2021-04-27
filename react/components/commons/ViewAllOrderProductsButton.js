@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { Link } from 'vtex.my-account-commons/Router'
 
 const ViewAllOrderProductsButton = ({ orderId }) => (
-  <Link to={`/orders/${orderId}`}>
+  <Link to={`/pedidos/${orderId}`}>
     <FormattedMessage id="order.viewAllItems" />
   </Link>
 )
