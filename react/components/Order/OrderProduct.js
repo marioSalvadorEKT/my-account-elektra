@@ -8,6 +8,7 @@ import ProductQuantity from '../commons/ProductQuantity'
 import Price from '../commons/FormattedPrice'
 import  formatted from '../../utils/currency';
 import  amount from '../../utils/amount';
+import  currency from '../../utils/currency';
 
 const OrderProduct = (props) => {
   const {
@@ -23,11 +24,14 @@ const OrderProduct = (props) => {
       sellingPrice,
       listPrice
     },
-    currency
+    currencyType,
+    shipping
   } = props
 
   const hasFloatUnitMultiplier = !!(unitMultiplier % 1)
   const unitValue = hasFloatUnitMultiplier ? sellingPrice / unitMultiplier : sellingPrice
+
+  console.log(shipping)
 
   return (
     <div className="myo-order-product w-100 pb2 pt2 overflow-y-hidden">
@@ -59,6 +63,13 @@ const OrderProduct = (props) => {
               shippingEstimateDate={shippingEstimateDate}
             />
           </p>
+          {
+            shipping && shipping.value !== 0 && (
+              <div className="db mt1 f6">
+                Costo de envio: <span className="ml4">{` $${currency(shipping.value / 100)}`}</span>
+              </div>
+            )
+          }
         </span>
       </div>
       <div className="dib w-20 pl3 c-on-base f6 fw4 lh-copy">

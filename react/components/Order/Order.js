@@ -69,14 +69,6 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
             </div>
           </div>
           <div className="mv3 f7 c-muted-2  items-center">
-            {
-              shipping && shipping.value !== 0 && (
-                <>
-                  <div>Costo de envío</div>
-                  <span>{`$ ${currency(amount(shipping.value))}`}</span>
-                </>
-              )
-            }
           </div>
           <div className="mv3">
             <div className="f7 c-muted-2 flex items-center">
@@ -96,7 +88,7 @@ const Order = ({ order, alwaysActive, allowSAC }) => {
       </div>
       <div className="w-80">
         {products.map((item, index) => (
-          <OrderProduct product={item} currency={currencyCode} key={index} />
+          <OrderProduct product={item} currency={currencyCode} key={index} shipping={shipping} />
         ))}
         {items && items.length > 5 && (
           <ViewAllOrderProductsButton orderId={orderId} />
